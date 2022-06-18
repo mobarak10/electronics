@@ -17,6 +17,8 @@ class CreatePartiesTable extends Migration
             $table->bigIncrements('id');
             $table->string('code', 45)->unique();
             $table->string('name');
+            $table->string('genus')->nullable();
+            $table->string('type')->nullable();
             $table->longText('description')->nullable();
             $table->string('phone', 45)->unique()->nullable();
             $table->string('email')->unique()->nullable();

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ asset('public/images/sharif.png') }}" type="image/png" sizes="16x16">
+    <link rel="icon" href="{{ asset('public/images/walton.png') }}" type="image/png" sizes="16x16">
 
     <title>Auth | {{ __(config('app.name', 'Laravel')) }}</title>
 

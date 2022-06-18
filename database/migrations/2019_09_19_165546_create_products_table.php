@@ -17,20 +17,28 @@ class CreateProductsTable extends Migration
             $table->bigIncrements('id');
             $table->string('code', 45)->unique();
             $table->string('barcode', 45)->nullable()->unique();
+            $table->string('model')->nullable();
             $table->string('name');
             $table->string('slug');
+            $table->unsignedBigInteger('party_id');
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('unit_id');
             $table->decimal('purchase_price', 10, 2)->default(0.00);
-            $table->decimal('sale_price', 10, 2)->default(0.00);
-            $table->decimal('wholesale_price', 10, 2)->nullable()->default(0.00);
-            $table->decimal('stock_alert', 10, 2)->default(5.00);
+            $table->decimal('wholesale_price', 10, 2)->default(0.00);
+            $table->decimal('retail_price', 10, 2)->default(0.00);
+            $table->decimal('stock_alert', 10, 2)->default(0.00);
             $table->text('description')->nullable();
             $table->boolean('active')->default(true);
             $table->unsignedBigInteger('business_id');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('party_id')
+                ->references('id')
+                ->on('parties')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
 
             $table->foreign('brand_id')
                 ->references('id')

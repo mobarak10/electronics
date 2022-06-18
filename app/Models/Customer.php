@@ -5,23 +5,28 @@ namespace App\Models;
 use App\Helpers\CustomMetaAccessor;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Model
 {
+    use SoftDeletes;
     use CustomMetaAccessor;
     protected $fillable = [
-        'code',
         'name',
-        'description',
         'phone',
-        'balance',
         'email',
-        'type',
-        'credit_limit',
-        'address',
         'thumbnail',
+        'balance',
+        'type',
+        'address',
+        'division',
+        'district',
+        'thana',
+        'description',
+        'code',
+        'type',
         'active',
-        'business_id',
+        'business_id'
     ];
 
 

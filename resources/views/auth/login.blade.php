@@ -9,7 +9,7 @@
                     <div class="col-lg-6">
                         <div class="company-description pr-lg-5">
                             <div>
-                                <img src="{{ asset('public/images/sharif.png') }}" alt="">
+                                <img src="{{ asset('public/images/walton.png') }}" alt="">
                             </div>
                         </div>
                     </div>

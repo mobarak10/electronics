@@ -3,7 +3,7 @@
 @section('content')
     <section class="main-page">
         <div class="haat-custom-style" style="position: absolute; top: 25%;">
-            <img src="{{ asset('public/images/sharif.png') }}" style="width: 100px;">
+            <img src="{{ asset('public/images/walton.png') }}" style="width: 100px;">
             <span style="font-size: 40px; font-weight: 900; position: relative; top: 12px;">{{ __(config('app.name', 'Laravel')) }}</span>
         </div>
         @if (Route::has('login'))

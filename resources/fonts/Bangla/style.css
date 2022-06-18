@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'Bangla';
+  src: url('inventory/public/fonts/Bangla/Bangla.eot');
+  src: url('inventory/public/fonts/Bangla/Bangla.woff') format('woff'),
+       url('inventory/public/fonts/Bangla/Bangla.ttf') format('truetype'),
+       url('inventory/public/fonts/Bangla/Bangla.svg#Bangla') format('svg'),
+       url('inventory/public/fonts/Bangla/Bangla.eot?#iefix') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.bangla{
+  font-family: 'Bangla' !important;
+}

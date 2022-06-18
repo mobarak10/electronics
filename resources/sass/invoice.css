@@ -1,0 +1,286 @@
+.bangla {
+  font-family: "Bangla";
+}
+
+.invoice {
+  max-width: 800px;
+  background: #fff;
+  font-size: 14px;
+  color: #000;
+  border: 1px solid #ddd;
+  width: 100%;
+  margin: 0 auto;
+  border-bottom: 5px solid #000;
+}
+.invoice .invoice-header {
+  background: #949398;
+  padding: 20px;
+}
+.invoice .invoice-header .logo {
+  max-width: 200px;
+  width: 100%;
+}
+.invoice .invoice-header .text {
+  text-align: right;
+}
+.invoice .invoice-header .text span, .invoice .invoice-header .text p {
+  line-height: 24px;
+  color: #fff;
+}
+.invoice .invoice-header .text p {
+  margin-bottom: 0;
+}
+.invoice .invoice-header .text span {
+  display: block;
+}
+.invoice .order-invoice-header {
+  background: #d2d1d7;
+  padding: 18px;
+}
+.invoice .order-invoice-header .text {
+  text-align: right;
+}
+.invoice .order-invoice-header .text span, .invoice .order-invoice-header .text p {
+  line-height: 24px;
+  color: #fff;
+}
+.invoice .order-invoice-header .text p {
+  margin-bottom: 0;
+}
+.invoice .order-invoice-header .text span {
+  display: block;
+}
+.invoice .client-details {
+  padding: 40px 30px;
+}
+.invoice .client-details .single:not(:last-child) {
+  margin-bottom: 15px;
+}
+.invoice .client-details .single .title {
+  color: #777676;
+  margin-bottom: 8px;
+  display: block;
+}
+.invoice .client-details .single > span {
+  display: block;
+  font-weight: 500;
+  line-height: 20px;
+}
+.invoice .client-details .single > span:not(:last-child) {
+  margin-bottom: 8px;
+}
+.invoice .client-details .single .total {
+  font-size: 30px;
+  color: #000;
+  font-weight: 500;
+}
+.invoice .description {
+  padding: 0 30px;
+}
+.invoice .description .table {
+  box-shadow: none;
+  background-origin: none;
+}
+.invoice .description .table tr:nth-of-type(odd) {
+  background: transparent;
+  font-size: inherit;
+}
+.invoice .description .table th, .invoice .description .table td {
+  padding-left: 0;
+  padding-right: 0;
+}
+.invoice .description .table th {
+  border-bottom: 0;
+  border-top: 0;
+}
+.invoice .description .table td {
+  border-top: 0;
+  border-bottom: 1px solid #777676;
+}
+.invoice .description .table thead {
+  border-top: 5px solid #000;
+}
+.invoice .description .table thead th {
+  border-bottom: 0;
+  vertical-align: top;
+  padding: 1rem 0 0.5rem;
+  color: #000;
+  font-weight: 500;
+}
+.invoice .description .table thead th span {
+  display: block;
+  font-weight: 400;
+  color: #777676;
+  margin-top: 3px;
+  font-size: 13px;
+}
+.invoice .description .table tbody td span {
+  display: block;
+  font-weight: 500;
+}
+.invoice .description .table tbody td p {
+  color: #777676;
+  font-size: 13px;
+}
+.invoice .terms-and-total {
+  padding: 40px 30px 50px;
+}
+.invoice .terms-and-total .terms h5 {
+  color: #000;
+  font-size: 20px;
+  margin-top: 15px;
+}
+.invoice .terms-and-total .terms p {
+  line-height: 24px;
+  color: #777676;
+}
+.invoice .terms-and-total .total .single {
+  color: #000;
+  font-weight: 500;
+}
+.invoice .terms-and-total .total .single:not(:last-child) {
+  margin-bottom: 10px;
+}
+.invoice .terms-and-total .total .single span {
+  display: inline-block;
+  width: 150px;
+  color: #000;
+}
+.invoice .footer {
+  padding: 30px;
+}
+.invoice .footer p {
+  font-weight: 500;
+}
+.invoice .footer .signature {
+  padding-top: 10px;
+  max-width: 200px;
+  margin-left: auto;
+  text-align: center;
+  border-top: 1px solid #000;
+}
+.invoice .footer .employeesignature {
+  padding-top: 10px;
+  max-width: 200px;
+  text-align: center;
+  border-top: 1px solid #000;
+}
+
+.bill-paper {
+  background: #f8f8f8;
+  max-width: 78mm;
+  width: 100%;
+  align-self: flex-start;
+  padding-bottom: 10px;
+  display: none;
+}
+.bill-paper * {
+  font-size: 10px;
+  line-height: 16px;
+  margin-bottom: 0;
+}
+.bill-paper .brand {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.bill-paper .block-heading {
+  font-size: 12px;
+}
+.bill-paper .details {
+  border-bottom: 1px dashed #000;
+  padding-bottom: 5px;
+  text-align: center;
+}
+.bill-paper .details strong {
+  font-size: 12px;
+  line-height: 20px;
+  margin-bottom: 2px;
+  display: block;
+}
+.bill-paper .details ul li {
+  font-size: 11px;
+  line-height: 18px;
+  text-transform: uppercase;
+}
+.bill-paper .memo span {
+  display: inline-block;
+  padding: 0 10px;
+}
+.bill-paper .memo table td, .bill-paper .memo table th {
+  padding: 0.2rem 0;
+  font-weight: inherit;
+  color: #000;
+  font-size: 12px;
+}
+.bill-paper .memo table thead th {
+  border-bottom-width: 1px;
+}
+.bill-paper .total-summary {
+  border-bottom: 1px dashed #000;
+}
+.bill-paper .total-summary * {
+  font-size: 12px;
+  line-height: 20px;
+  font-weight: 700;
+}
+.bill-paper .total-summary .single {
+  text-align: right;
+}
+.bill-paper .total-summary .single span {
+  display: inline-block;
+  width: 90px;
+}
+
+.print {
+  max-width: 796px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+}
+.print button {
+  background: #2380c5;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+}
+.print button:hover {
+  background: #3e99dd;
+  color: #fff;
+}
+
+@media print {
+  .body-container {
+    height: auto !important;
+    overflow-y: initial !important;
+    overflow-x: initial !important;
+  }
+
+  .wrapper .column {
+    height: auto !important;
+  }
+
+  .invoice {
+    max-width: 100%;
+  }
+
+  .row, .container-fluid, .body-content, .body-container {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .bill-paper {
+    display: block;
+  }
+
+  .body-content {
+    background: none;
+  }
+
+  .aside, .main-nav, .alert, .wrapper-background, .body-header nav, title, footer, .body-header, .print {
+    display: none;
+  }
+}/*# sourceMappingURL=invoice.css.map */

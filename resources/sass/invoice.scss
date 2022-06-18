@@ -1,0 +1,295 @@
+//@import '../fonts/Bangla/style.css';
+$primary-color:#2380c5;
+$black:#000;
+.bangla{
+    font-family: 'Bangla';
+}
+.invoice{
+    max-width: 800px;
+    background: #fff;
+    font-size: 14px;
+    color:$black;
+    border: 1px solid #ddd;
+    width: 100%;
+    margin: 0 auto;
+    border-bottom: 5px solid $black;
+    .invoice-header{
+        background: #949398FF;
+        padding:20px;
+        .logo{
+            max-width: 200px;
+            width: 100%;
+        }
+        .text{
+            text-align: right;
+            span,p{
+                line-height: 24px;
+                color:#fff;
+            }
+            p{
+                margin-bottom: 0;
+            }
+            span{
+                display: block;
+            }
+        }
+    }
+    .order-invoice-header{
+        background: #d2d1d7;
+        padding:18px;
+        .text{
+            text-align: right;
+            span,p{
+                line-height: 24px;
+                color:#fff;
+            }
+            p{
+                margin-bottom: 0;
+            }
+            span{
+                display: block;
+            }
+        }
+    }
+    .client-details{
+        padding: 40px 30px;
+        .single{
+            &:not(:last-child){
+                margin-bottom: 15px;
+            }
+            .title{
+                color: #777676;
+                margin-bottom: 8px;
+                display: block;
+            }
+            > span{
+                display: block;
+                font-weight: 500;
+                line-height: 20px;
+                &:not(:last-child){
+                    margin-bottom: 8px;
+                }
+            }
+            .total{
+                font-size: 30px;
+                color: $black;
+                font-weight: 500;
+            }
+        }
+    }
+    .description{
+        padding: 0 30px;
+        .table{
+            box-shadow: none;
+            tr:nth-of-type(odd){
+                background: transparent;
+                font-size: inherit;
+            }
+            th,td{
+                padding-left: 0;
+                padding-right: 0;
+            }
+            th{
+                border-bottom: 0;
+                border-top: 0;
+            }
+            td{
+                border-top: 0;
+                border-bottom: 1px solid #777676;
+            }
+            background-origin: none;
+            thead{
+                border-top: 5px solid $black;
+                th{
+                    border-bottom: 0;
+                    vertical-align: top;
+                    padding: 1rem 0 .50rem;
+                    color: $black;
+                    font-weight: 500;
+                    span{
+                        display: block;
+                        font-weight: 400;
+                        color: #777676;
+                        margin-top: 3px;
+                        font-size: 13px;
+                    }
+                }
+            }
+            tbody{
+                td{
+                    span{
+                        display: block;
+                        font-weight: 500;
+                    }
+                    p{
+                        color: #777676;
+                        font-size: 13px;
+                    }
+                }
+            }
+        }
+    }
+    .terms-and-total{
+        padding: 40px 30px 50px;
+        .terms{
+            h5{
+                color: $black;
+                font-size: 20px;
+                margin-top: 15px;
+            }
+            p{
+                line-height: 24px;
+                color: #777676;
+            }
+        }
+        .total{
+            .single{
+                color: $black;
+                font-weight: 500;
+                &:not(:last-child){
+                    margin-bottom: 10px;
+                }
+                span{
+                    display: inline-block;
+                    width: 150px;
+                    color: $black;
+                }
+            }
+        }
+    }
+    .footer{
+        padding:30px;
+        p{
+            font-weight: 500;
+        }
+        .signature{
+            padding-top: 10px;
+            max-width: 200px;
+            margin-left: auto;
+            text-align: center;
+            border-top: 1px solid $black;
+        }
+        .employeesignature{
+            padding-top: 10px;
+            max-width: 200px;
+            text-align: center;
+            border-top: 1px solid $black;
+        }
+    }
+}
+.bill-paper{
+    background: #f8f8f8;
+    max-width: 78mm;
+    width: 100%;
+    align-self: flex-start;
+    padding-bottom: 10px;
+    display: none;
+    *{
+        font-size: 10px;
+        line-height:16px;
+        margin-bottom: 0;
+    }
+    .brand{
+        font-size: 18px;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .block-heading{
+        font-size: 12px;
+    }
+    .details{
+        border-bottom: 1px dashed #000;
+        padding-bottom: 5px;
+        text-align: center;
+        strong{
+            font-size: 12px;
+            line-height: 20px;
+            margin-bottom: 2px;
+            display: block;
+        }
+        ul{
+            li{
+                font-size: 11px;
+                line-height: 18px;
+                text-transform: uppercase;
+            }
+        }
+    }
+    .memo{
+        span{
+            display: inline-block;
+            padding: 0 10px;
+        }
+        table{
+            td,th{
+                padding: .20rem 0;
+                font-weight: inherit;
+                color: #000;
+                font-size: 12px;
+            }
+            thead th{
+                border-bottom-width: 1px;
+            }
+        }
+    }
+    .total-summary{
+        border-bottom: 1px dashed #000;
+        *{
+            font-size: 12px;
+            line-height: 20px;
+            font-weight: 700;
+        }
+        .single{
+            text-align: right;
+            span{
+                display: inline-block;
+                width: 90px;
+            }
+        }
+    }
+}
+.print{
+    max-width: 796px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-end;
+    button{
+        background: #2380c5;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        font-size: 16px;
+        color: #fff;
+        &:hover{
+            background: lighten(#2380c5,10%);
+            color: #fff;
+        }
+    }
+}
+@media print {
+    .body-container {
+        height: auto!important;
+        overflow-y: initial!important;
+        overflow-x: initial!important;
+    }
+    .wrapper .column{
+        height: auto!important;
+    }
+    .invoice{
+        max-width: 100%;
+    }
+    .row,.container-fluid,.body-content,.body-container{
+        margin: 0!important;
+        padding: 0!important;
+    }
+    .bill-paper{
+        display: block;
+    }
+    .body-content{
+        background: none;
+    }
+    .aside, .main-nav, .alert, .wrapper-background, .body-header nav, title,footer,.body-header,.print {
+        display: none;
+    }
+}

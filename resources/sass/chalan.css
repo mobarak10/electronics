@@ -1,0 +1,116 @@
+.chalan {
+  max-width: 796px;
+  margin: 30px auto;
+}
+.chalan .card .card-header .font-16 {
+  font-size: 16px;
+}
+.chalan .card .card-header .font-12 {
+  font-size: 12px;
+}
+.chalan .card .card-header .font-10 {
+  font-size: 10px;
+}
+.chalan .card .card-body .border-bottom-1 {
+  border-bottom: 1px solid black;
+}
+.chalan .card .card-body .border-right-1 {
+  border-right: 1px solid black;
+}
+.chalan .card .card-body .font-20 {
+  font-size: 20px;
+}
+.chalan .card .card-body .font-14 {
+  font-size: 14px;
+}
+.chalan .card .card-body .font-14 span {
+  width: 50px;
+}
+.chalan .card .card-body .font-12 {
+  font-size: 12px;
+}
+.chalan .card .card-body .list-group .list-group-item {
+  padding: 0;
+  border: none;
+  display: flex;
+}
+.chalan .card .card-body .table {
+  margin-top: 5px;
+  margin-bottom: 0rem !important;
+}
+.chalan .card .card-body .table th {
+  border: 1px solid black;
+  font-weight: 0 !important;
+}
+.chalan .card .card-body .table td {
+  font-size: 18px;
+  font-weight: normal;
+  padding: 4px !important;
+}
+.chalan .card .signature p {
+  border-top: 1px dotted #2A3F4C;
+}
+
+.print-show {
+  display: none;
+}
+
+@media print {
+  aside, header, .print-none, .alert, .pagination, footer {
+    display: none;
+  }
+
+  .col-12 {
+    margin-top: 0 !important;
+    padding: 0 !important;
+  }
+
+  .main-title {
+    margin-bottom: 20px !important;
+  }
+
+  .chalan {
+    margin-top: 0;
+  }
+  .chalan .card {
+    width: 48%;
+    overflow: hidden;
+    border: 0;
+  }
+  .chalan .card .card-header {
+    border-bottom: 1px solid gray;
+    text-align: center;
+  }
+  .chalan .card .card-header p {
+    font-size: 12px;
+  }
+  .chalan .card .card-body {
+    margin-top: 5px !important;
+    padding: 0 !important;
+  }
+  .chalan .card .card-body li {
+    font-size: 12px;
+  }
+  .chalan .card .card-body p {
+    font-size: 12px;
+  }
+  .chalan .card .table {
+    margin-top: 10px !important;
+    font-size: 12px;
+  }
+  .chalan .card .table th, .chalan .card .table td {
+    padding: 5px !important;
+    line-height: 10px;
+  }
+  .chalan .card .signature {
+    padding: 0 !important;
+  }
+
+  .print-show {
+    display: block;
+  }
+
+  .mainbar {
+    margin-left: 0 !important;
+  }
+}/*# sourceMappingURL=chalan.css.map */

@@ -1,0 +1,96 @@
+/* print media style start */
+@media print {
+    .aside, .main-nav, .alert, .wrapper-background, .body-header nav, title,footer,.body-header,.print,.main-footer,.pagination{
+        display: none!important;
+    }
+    .body-container{
+        height: auto!important;
+    }
+    .mt-2{
+        margin: 0!important;
+    }
+    .container,.row{
+        padding: 0;
+    }
+    .body-content{
+        padding: 0!important;
+        background: initial;
+    }
+    .print-none{
+        display: none!important;
+    }
+    .p-print-0{
+        padding: 0!important;
+    }
+    .print-border{
+        border: 1px dashed #000;
+    }
+    .print-m-0{
+        margin: 0!important;
+    }
+    .barcode-wrapper {
+
+    }
+    .barcode-wrapper{
+        margin: 0!important;
+        position: relative;
+        z-index: 99999;
+        margin: 0 auto;
+        .barcode-single{
+           max-width: 110mm;
+           flex-basis: unset;
+           padding: 0!important;
+            small{
+                margin: 0 auto!important;
+            }
+            img{
+                max-width: 200px!important;
+            }
+            h5{
+                margin: 0!important;
+                font-size: 20px!important;
+            }
+            h6{
+                margin: 0!important;
+                font-size: 18px!important;
+            }
+            h4{
+                font-size: 28px!important;
+            }
+        }
+    }
+    // Barcode Print Style - NEW - Start
+    // .barcode-print-new {
+    //     margin-left: 25px;
+    //     display: block !important;
+    //     .barcode-print-new-single {
+    //         text-align: center;
+    //         width: 100% !important;
+    //         max-width: 180px !important;
+    //         margin-left: 6%;
+    //         margin-bottom: 15px;
+    //         small {
+    //             letter-spacing: 21px;
+    //             position: relative;
+    //             left: 12px;
+    //             margin-bottom: 0 !important;
+    //         }
+    //         h4 {
+    //             font-size: 18px;
+    //             font-weight: bold;
+    //             margin-bottom: 0 !important;
+    //         }
+    //         h5 {
+    //             margin-bottom: 0 !important;
+    //             font-size: 16px;
+    //             font-weight: bold;
+    //         }
+    //         h6 {
+    //             margin-bottom: 0 !important;
+    //             font-size: 16px;
+    //         }
+    //     }
+    // }
+    // Barcode Print Style - NEW - End
+}
+/* print media style end */

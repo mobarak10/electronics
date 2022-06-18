@@ -1,0 +1,163 @@
+@extends('layouts.admin')
+
+@section('title', $title)
+
+@section('content')
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 py-3">
+			<h1 class="text-center pt-5 pb-4 d-none d-print-block">জননী বস্ত্রালয়</h1>
+			<div class="card">
+
+				<div class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="m-0">@lang('contents.bank_account')</h5>
+					<span class="d-none d-print-block">10/5/20</span>
+					<div class="action-area print-none" role="group" aria-level="Action area">
+						<a href="#" onclick="window.print();" title="Print" class="btn btn-warning print-none"><i aria-hidden="true" class="fa fa-print"></i></a>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newBankAccoutnModal" title="Create new Account">
+							<i class="fa fa-plus"></i>
+						</button>
+					</div>
+				</div>
+
+				<div class="card-body p-0">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>@lang('contents.account_name')</th>
+								<th>@lang('contents.bank_name')</th>
+								<th>@lang('contents.account_number')</th>
+								<th class="text-right">@lang('contents.balance') (@lang('contents.bdt'))</th>
+								<th class="text-right print-none">@lang('contents.action')</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							@forelse($bank_account as $account)
+							<tr>
+								<td>{{ $loop->iteration }}.</td>
+								<td>{{ $account->account_name }}</td>
+								<td>{{ $account->bank->name }}</td>
+								<td>
+									<a title="show transaction details" href="#">
+										{{ $account->account_number }}
+									</a>
+								</td>
+								<td class="text-right">{{ number_format($account->balance, 2) }}</td>
+								<td class="text-right print-none">
+									<a href="{{ route('admin.bankAccount.show', $account->bank->id) }}" class="btn btn-primary" title="Show this bank account information.">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
+
+                                     <a href="{{ route('admin.bankAccount.edit', $account->id) }}" class="btn btn-primary" title="Change Bank Account information.">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
+
+                                    <a href="{{ route('admin.bankAccount.index') }}" class="btn btn-danger" title="Trash" onClick="if(confirm('Are you sure, You want to delete this record?')){event.preventDefault();document.getElementById('delete-form-{{ $account->id }}').submit();} else {event.preventDefault();}">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </a>
+
+                                    <form action="{{ route('admin.bankAccount.destroy', $account->id) }}" method="post" id="delete-form-{{ $account->id }}" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </td>
+							</tr>
+							@empty
+							<tr>
+								<td colspan="6" class="text-center">No bank account available.</td>
+							</tr>
+							@endforelse
+
+                            <tr>
+                                <td colspan="4" class="text-right">Total </td>
+                                <td class="text-right">{{ number_format($total_bank_balance, 2) }}</td>
+                                <td class="print-none">&nbsp;</td>
+                            </tr>
+						</tbody>
+					</table>
+
+					<!-- paginate -->
+                    <div class="float-right mx-2">
+                        {{ $bank_account->links() }}
+                    </div>
+				</div>
+
+				<!-- New account modal -->
+                <div class="modal fade" id="newBankAccoutnModal" tabindex="-1" role="dialog" aria-labelledby="insertModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <form action="{{ route('admin.bankAccount.store') }}" method="post">
+                                @csrf
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="insertModalLabel">Create new Bank Account </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                	<div class="row">
+                                    	<div class="form-group col-md-6 required">
+	                                        <label for="name">Account Owner Name</label>
+	                                        <input type="text" name="name" class="form-control" id="name" placeholder="Enter account owner Name" value="{{ old('name') }}" required>
+	                                    </div>
+
+	                                     <div class="form-group col-md-6 required">
+				                            <label for="bank_id">Bank Name</label>
+	                                         <select name="bank_id" id="bank_id" class="form-control" required>
+	                                             <option value="" selected disabled>Choose a bank</option>
+	                                             @foreach($banks as $bank)
+	                                             	<option value="{{ $bank->id }}">{{ $bank->name }}</option>}
+	                                             @endforeach
+	                                         </select>
+				                        </div>
+
+				                        <div class="form-group col-md-6 required">
+				                            <label for="kind">Account Type/Kind</label>
+				                            <select name="kind" class="form-control" id="kind" required>
+				                            	<option value="" selected disabled>Choose account type</option>
+
+	                                            @foreach(config('coderill.bank.account.kind') as $key => $kind)
+				                            	    <option value="{{ $key }}">{{ $kind }}</option>
+	                                            @endforeach
+				                            </select>
+				                        </div>
+
+				                        <div class="form-group col-md-6 required">
+				                            <label for="account_number">Account Number</label>
+				                            <input type="text" class="form-control" id="account_number" placeholder="enter account number" name="account_number" required>
+				                        </div>
+
+				                        <div class="form-group col-md-6 required">
+				                            <label for="branch">Branch</label>
+	                                         <input type="text" name="branch" class="form-control" id="branch" placeholder="enter branch address of this bank" required>
+				                        </div>
+
+				                        <div class="form-group col-md-6">
+				                            <label for="balance">Balance (BDT)</label>
+				                            <input type="number" placeholder="enter balance" class="form-control" id="balance" name="balance" step="any">
+				                        </div>
+			                        </div>
+
+			                        <div class="form-group">
+			                            <label for="note">Note</label>
+			                            <textarea name="note" id="ballance" class="form-control" placeholder="write sort note (optional)"></textarea>
+			                        </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
+@endsection

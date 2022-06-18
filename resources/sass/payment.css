@@ -1,0 +1,168 @@
+.payment .card-header a i {
+  margin-right: 8px;
+}
+.payment .total ul li {
+  background: none;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+.payment .total ul li input::-webkit-inner-spin-button,
+.payment .total ul li input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.payment .pads .card-body {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+.payment .pads .card-body .pad > button {
+  padding: 15px;
+  display: block;
+  background: #222d32;
+  width: 100%;
+  height: 100%;
+  border: 3px solid #fff;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+}
+.payment .pads .card-body .pad i {
+  display: inline-block;
+}
+.payment .pads .card-body .pad:focus {
+  outline: none;
+}
+.payment .pads .card-body .pad:nth-child(1) {
+  grid-column: 1/3;
+  grid-row: 1/3;
+}
+.payment .pads .card-body .pad:nth-child(1) button i {
+  background: #374850;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.payment .pads .card-body .pad:nth-child(1) button span {
+  display: block;
+}
+.payment .pads .card-body .pad:nth-child(2) {
+  grid-column: 3/5;
+}
+.payment .pads .card-body .pad:nth-child(2) > button {
+  background: #2380c5;
+}
+.payment .pads .card-body .pad:nth-child(3) {
+  grid-column: 3/5;
+}
+.payment .pads .card-body .pad:last-child {
+  grid-row: 5/7;
+  grid-column: 4/5;
+}
+.payment .pads .card-body .cash-modal .cash .cash-single {
+  height: 100px;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+}
+.payment .pads .card-body .cash-modal .cash .cash-single input {
+  position: absolute;
+  opacity: 0;
+}
+.payment .pads .card-body .cash-modal .cash .cash-single div {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 100px;
+}
+.payment .pads .card-body .cash-modal .cash .cash-single div::after {
+  position: absolute;
+  border-radius: 5px;
+  content: "";
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: #222d32;
+  z-index: -1;
+  transition: 0.2s ease-in;
+}
+.payment .pads .card-body .cash-modal .cash .cash-single input:checked + div::after {
+  background: #2380c5;
+}
+.payment .pads .card-body .cash-modal .modal-footer button {
+  background: #2380c5;
+}
+.payment .pads .card-body .cash-modal .modal-footer button:first-child {
+  background: #d31122;
+}
+.payment .pads .customer-modal img {
+  max-width: 70px;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+}
+.payment .pads .customer-modal .modal-body h5 {
+  font-weight: bold;
+}
+.payment .pads .customer-modal .modal-body span {
+  font-weight: bold;
+  display: inline-block;
+  max-width: 100px;
+  width: 100%;
+}
+.payment .pads .customer-modal .modal-body:not(:last-child) {
+  margin-bottom: 2px;
+}
+.payment .pads .customer-modal .modal-body .input-group button {
+  background: #2380c5;
+}
+.payment .pads .customer-modal .customer-list {
+  height: 320px;
+  overflow: auto;
+}
+.payment .pads .customer-modal .customer-list::-webkit-scrollbar {
+  width: 5px;
+}
+.payment .pads .customer-modal .customer-list::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 5px;
+}
+.payment .pads .customer-modal .customer-list:hover::-webkit-scrollbar-thumb {
+  background: #222d32;
+}
+.payment .pads .customer-modal .customer-list li:not(:last-child) label {
+  border-bottom: 1px solid #ddd;
+}
+.payment .pads .customer-modal .customer-list li label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  overflow: initial;
+  width: auto;
+  margin-bottom: 0px;
+}
+.payment .pads .customer-modal .customer-list li label.active {
+  background: #e7ecf5;
+  transition: 0.1s ease-in;
+}
+.payment .pads .customer-modal .customer-list li label input {
+  opacity: 0;
+}
+.payment .pads .customer-modal .customer-list li label .image {
+  margin-right: 15px;
+}
+.payment .pads .customer-modal .customer-list li label .image img {
+  max-width: 50px;
+  width: 100%;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+}
+.payment .pads .customer-modal .customer-list li label .details h5 {
+  margin-bottom: 0px;
+}/*# sourceMappingURL=payment.css.map */

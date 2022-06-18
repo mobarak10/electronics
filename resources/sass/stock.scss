@@ -1,0 +1,25 @@
+@media print {
+    .aside, .main-nav, .alert, .wrapper-background, .body-header nav, title,footer,.body-header,.invoice,.print{
+        display: none;
+    }
+    .container,.row{
+        padding: 0;
+    }
+    .body-content{
+        padding: 0;
+        background: initial;
+    }
+    .current-stock,.damage-stock{
+        margin-left: 10px;
+        border: none;
+    }
+    .current-stock .print-none,.damage-stock .print-none{
+        display: none!important;
+    }
+    div[class*="col"]{
+        padding: 0;
+    }
+    .py-print-4{
+        padding: 1.5rem 0!important;
+    }
+}

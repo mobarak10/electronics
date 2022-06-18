@@ -1,0 +1,192 @@
+.pos .pos-left .order {
+  position: relative;
+}
+.pos .pos-left .order .order-header h5 {
+  font-size: 20px;
+  padding: 0 10px 10px;
+}
+.pos .pos-left .order .orderline-wrapper {
+  max-height: 400px;
+  min-height: 200px;
+  overflow: auto;
+}
+.pos .pos-left .order .orderline-wrapper::-webkit-scrollbar {
+  width: 5px;
+}
+.pos .pos-left .order .orderline-wrapper::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 5px;
+}
+.pos .pos-left .order .orderline-wrapper:hover::-webkit-scrollbar-thumb {
+  background: #222d32;
+}
+.pos .pos-left .order .orderline-wrapper .orderline {
+  padding: 8px 10px;
+  border-bottom: 1px solid #ddd;
+  border-left: 5px solid #6f42c1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  margin-right: 5px !important;
+  transition: 0.3s ease-in;
+}
+.pos .pos-left .order .orderline-wrapper .orderline:hover {
+  background: #dce3f0;
+}
+.pos .pos-left .order .orderline-wrapper .orderline:hover .remove-product {
+  right: 0;
+  top: 0;
+}
+.pos .pos-left .order .orderline-wrapper .orderline .left .product-name {
+  font-size: 13px;
+  font-weight: 800;
+  position: static;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 23px;
+}
+.pos .pos-left .order .orderline-wrapper .orderline .left .product-name a {
+  color: #222d32;
+}
+.pos .pos-left .order .orderline-wrapper .orderline .left .quantity p {
+  margin-bottom: 0;
+  clear: both;
+  font-size: 13px;
+}
+.pos .pos-left .order .orderline-wrapper .orderline .right {
+  justify-content: flex-end;
+}
+.pos .pos-left .order .orderline-wrapper .orderline .right .price {
+  font-size: 13px;
+  text-align: center;
+  line-height: 20px;
+  transition: 0.3s ease-in;
+}
+.pos .pos-left .order .orderline-wrapper .orderline .right .remove-product {
+  position: relative;
+  z-index: 5;
+  cursor: pointer;
+  color: #a40d1a;
+  text-align: center;
+  font-size: 20px;
+  border-radius: 20px 0 20px 20px;
+  transition: 0.3s linear;
+}
+.pos .pos-left .order .orderline-wrapper .orderline .right .remove-product:hover {
+  color: #ee293a;
+}
+.pos .pos-left .total-wrapper {
+  margin-right: 12px;
+  padding: 20px;
+  text-align: right;
+  font-size: 13px;
+}
+.pos .pos-left .total-wrapper .row {
+  align-items: center;
+}
+.pos .pos-left .total-wrapper .row:not(:last-child) {
+  margin-bottom: 5px;
+}
+.pos .pos-left .total-wrapper div[class*=col]:first-child {
+  color: #6f42c1;
+  font-weight: 600;
+  font-size: 16px;
+}
+.pos .pos-right .pos-companies .block-header, .pos .pos-right .pos-categories .block-header, .pos .pos-right .pos-products .block-header {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+.pos .pos-right .pos-companies .block-header h5, .pos .pos-right .pos-categories .block-header h5, .pos .pos-right .pos-products .block-header h5 {
+  font-size: 20px;
+  margin-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.pos .pos-right .pos-companies h5, .pos .pos-right .pos-categories h5, .pos .pos-right .pos-products h5 {
+  font-size: 22px;
+  margin-bottom: 0;
+  margin-bottom: 10px;
+}
+.pos .pos-right .pos-companies .single, .pos .pos-right .pos-categories .single, .pos .pos-right .pos-products .single {
+  background: #6f42c1;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.pos .pos-right .pos-companies .single .name, .pos .pos-right .pos-companies .single .price, .pos .pos-right .pos-categories .single .name, .pos .pos-right .pos-categories .single .price, .pos .pos-right .pos-products .single .name, .pos .pos-right .pos-products .single .price {
+  color: #fff;
+  display: block;
+}
+.pos .pos-right .pos-companies .single .name, .pos .pos-right .pos-categories .single .name, .pos .pos-right .pos-products .single .name {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 1px;
+}
+.pos .pos-right .pos-companies .single .price, .pos .pos-right .pos-categories .single .price, .pos .pos-right .pos-products .single .price {
+  font-size: 12px;
+}
+.pos .pos-right .pos-companies .single.w-image, .pos .pos-right .pos-categories .single.w-image, .pos .pos-right .pos-products .single.w-image {
+  padding: 0;
+  background: none;
+  position: relative;
+  display: inline-block;
+  border: 1px solid #ccc !important;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+.pos .pos-right .pos-companies .single.w-image .content, .pos .pos-right .pos-categories .single.w-image .content, .pos .pos-right .pos-products .single.w-image .content {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: rgba(34, 45, 50, 0.7);
+  padding: 8px 5px;
+  transition: 0.3s ease-in;
+  width: 100%;
+}
+.pos .pos-right .pos-companies .single.w-image .name, .pos .pos-right .pos-companies .single.w-image .price, .pos .pos-right .pos-categories .single.w-image .name, .pos .pos-right .pos-categories .single.w-image .price, .pos .pos-right .pos-products .single.w-image .name, .pos .pos-right .pos-products .single.w-image .price {
+  font-size: 12px;
+  line-height: 14px;
+  color: #fff;
+  border-radius: 3px;
+  display: block;
+}
+.pos .pos-right .pos-companies .single.w-image .name, .pos .pos-right .pos-categories .single.w-image .name, .pos .pos-right .pos-products .single.w-image .name {
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 3px;
+}
+.pos .pos-right .pos-companies .single.w-image img, .pos .pos-right .pos-categories .single.w-image img, .pos .pos-right .pos-products .single.w-image img {
+  border-radius: 4px;
+}
+.pos .pos-right .pos-companies .single .modal .modal-header h5, .pos .pos-right .pos-categories .single .modal .modal-header h5, .pos .pos-right .pos-products .single .modal .modal-header h5 {
+  margin-bottom: 0;
+}
+.pos .pos-right .pos-categories .single {
+  height: auto;
+  text-align: center;
+  justify-content: center;
+}
+.pos .pos-right .pos-products .single {
+  min-height: 100px;
+  max-height: 170px;
+}
+.pos .products-modal .modal-header h5 {
+  margin-bottom: 0;
+}
+.pos .products-modal .modal-footer {
+  padding: 0.5rem;
+}
+.pos .products-modal form .input-group-prepend button {
+  background: #6f42c1;
+}
+.pos .products-modal textarea {
+  height: 100px;
+}
+.pos .products-modal .btn-wrapper button {
+  background: #6f42c1;
+}/*# sourceMappingURL=pos.css.map */

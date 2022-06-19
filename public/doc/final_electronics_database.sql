@@ -16252,7 +16252,6 @@ CREATE TABLE `sale_payments` (
 --
 
 INSERT INTO `sale_payments` (`id`, `sale_id`, `cash_id`, `bank_account_id`, `cheque_number`, `issue_date`, `phone_number`, `created_at`, `updated_at`) VALUES
-(2, 2, 1, NULL, NULL, NULL, NULL, '2021-11-07 17:15:21', '2021-11-07 17:15:21'),
 (6, 6, 1, NULL, NULL, NULL, NULL, '2022-03-12 16:58:45', '2022-03-12 16:58:45'),
 (7, 7, 1, NULL, NULL, NULL, NULL, '2022-03-12 17:02:55', '2022-03-12 17:02:55'),
 (8, 8, 1, NULL, NULL, NULL, NULL, '2022-03-23 21:16:13', '2022-03-23 21:16:13'),

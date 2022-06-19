@@ -16,7 +16,7 @@ class CreateInstallmentCollectionsTable extends Migration
         Schema::create('installment_collections', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('hire_sale_id');
-            $table->unsignedBigInteger('party_id');
+            $table->unsignedBigInteger('customer_id');
             $table->date('date');
             $table->string('paid_by')->nullable();
             $table->decimal('payment_amount')->default(0.00);
@@ -28,9 +28,9 @@ class CreateInstallmentCollectionsTable extends Migration
                 ->references('id')
                 ->on('hire_sales');
 
-            $table->foreign('party_id')
+            $table->foreign('customer_id')
                 ->references('id')
-                ->on('parties');
+                ->on('customers');
         });
     }
 

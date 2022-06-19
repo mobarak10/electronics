@@ -56,9 +56,10 @@
                                         <tr>
                                             <th class="text-center">{{ lang.sl }}</th>
                                             <th style="min-width: 180px">{{ lang.product_name }}</th>
-                                            <!-- <th class="text-right">Stock</th> -->
+                                            <th>Serial No</th>
                                             <th>{{ lang.quantity }}</th>
                                             <th>{{ lang.sale_price }}</th>
+                                            <th title="Discount">{{ lang.discount }} {{ '%' }}</th>
                                             <th class="text-right">{{ lang.total }}</th>
                                             <th class="text-center print-none">
                                                 {{ lang.action }}
@@ -81,6 +82,7 @@
                                         >
                                             <td>{{ productIndex + 1 }}.</td>
                                             <td>{{ product.name }}</td>
+                                            <td>{{ product.serial_number }}</td>
 
                                             <!-- <td class="text-right">
                                                 <span :class="product.total_product_quantity >= 0 ? 'text-success' : 'text-danger'">
@@ -133,13 +135,23 @@
                                                 />
                                             </td>
 
+                                            <td>
+                                                <!-- discount Price -->
+                                                <input
+                                                    type="number"
+                                                    step="any"
+                                                    class="form-control form-control-sm"
+                                                    v-model.trim="product.discount"
+                                                />
+                                            </td>
+
                                             <td class="text-right">
                                                 <div>
                                                     {{
                                                         Number.parseFloat(
                                                             (product.total_price =
-                                                                Math.ceil(parseFloat(product.sale_quantity || 0)
-                                                    * parseFloat(product.price || 0)))).toFixed(2)
+                                                                (Math.ceil(parseFloat(product.sale_quantity || 0)
+                                                    * parseFloat(product.price || 0))) - ((product.sale_quantity * product.price) * product.discount) / 100 )).toFixed(2)
                                                     }}
                                                 </div>
                                             </td>
@@ -244,38 +256,6 @@
 
                                     <!-- Bottom Right Section Start -->
                                     <div class="col-md-6">
-                                        <!-- Total Amount Start -->
-                                        <div class="form-group row">
-                                            <label
-                                                class="text-right col-3 col-form-label"
-                                                for="total-kg"
-                                            >{{ lang.total }} {{ lang.kg }}</label
-                                            >
-                                            <div class="col-9">
-                                                <div
-                                                    class="input-group input-group-sm"
-                                                >
-                                                    <input
-                                                        type="number"
-                                                        class="form-control form-control-sm"
-                                                        id="total-kg"
-                                                        autocomplete="off"
-                                                        :value="Number.parseFloat(total_kg).toFixed(2)"
-                                                        disabled
-                                                    />
-                                                    <div
-                                                        class="input-group-append"
-                                                    >
-                                                        <span
-                                                            class="input-group-text"
-                                                        >৳</span
-                                                        >
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Total Amount End -->
-
                                         <!-- Total Amount Start -->
                                         <div class="form-group row">
                                             <label
@@ -409,38 +389,6 @@
                                             </div>
                                         </div>
                                         <!-- transport cost End -->
-
-                                        <!-- Grand Total Start -->
-                                        <div class="form-group row">
-                                            <label
-                                                class="text-right col-3 col-form-label"
-                                                for="today-total">
-                                                {{ lang.today_total }}
-                                            </label>
-
-                                            <div class="col-9">
-                                                <div class="input-group input-group-sm">
-                                                    <input
-                                                        type="number"
-                                                        class="form-control form-control-sm"
-                                                        id="today-total"
-                                                        autocomplete="off"
-                                                        disabled
-                                                        :value="
-                                                            Number.parseFloat(
-                                                                sale_amount =
-                                                                ((parseFloat(subtotal) + parseFloat(form.labourCost || 0) + parseFloat(form.transportCost || 0)))
-                                                                -
-                                                                parseFloat(totalDiscount || 0)).toFixed(2)"
-                                                    />
-
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">৳</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Grand Total End -->
 
                                         <!-- Grand Total Start -->
                                         <div class="form-group row">
@@ -637,39 +585,6 @@
                                         <div class="form-group row">
                                             <label
                                                 class="text-right col-3 col-form-label"
-                                                for="today-due">
-                                                {{lang.today_due}}
-                                            </label>
-
-                                            <div class="col-9">
-                                                <div class="input-group input-group-sm">
-                                                    <input
-                                                        type="number"
-                                                        class="form-control form-control-sm"
-                                                        id="today-due"
-                                                        autocomplete="off"
-                                                        disabled
-                                                        :value="
-                                                            Number.parseFloat(
-                                                                sale_due =
-                                                                Math.abs(
-                                                                (sale_amount - form.payment.paid) < 0 ? 0 : (sale_amount - form.payment.paid)
-                                                            )
-                                                            ).toFixed(2)"
-                                                    />
-
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">৳</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Amount End -->
-
-                                        <!-- Amount Start -->
-                                        <div class="form-group row">
-                                            <label
-                                                class="text-right col-3 col-form-label"
                                                 for="due-or-change"
                                                 >{{
                                                     dueOrChange >= 0
@@ -771,13 +686,6 @@ export default {
                     return parseFloat(item.total_price) + total;
                 }, 0);
 
-                this.total_kg = value.reduce((total, item) => {
-                    return parseFloat(item.product_kg) + total;
-                }, 0);
-
-                // this.form.labourCost = value.reduce((total, item) => {
-                //     return parseFloat(item.labour_cost) + total;
-                // }, 0);
             }
         },
 
@@ -835,7 +743,6 @@ export default {
                 },
                 comment: null,
             },
-            total_kg: 0,
             saleId: null,
             errors: null,
             disableWarehouse: false,
@@ -898,10 +805,10 @@ export default {
                 const newProduct = {
                     ...value,
                     sale_quantity: 0,
-                    labour_cost: 0,
                     price: 0,
-                    product_kg: 0,
                     total_price: 0,
+                    discount: product.discount,
+                    discount_type: 'percentage',
                     display_quantity: displayQuantity,
                     purchasePrice: value.stock.average_purchase_price,
                 };
@@ -926,12 +833,6 @@ export default {
             product.quantity[order] = event.target.value ? event.target.value : null
             product.sale_quantity = lowestConverter(product.quantity, product.unit);
 
-            if (product.unit.unit_length > 1) {
-                product.labour_cost = product.sale_quantity * 0.30
-                product.product_kg = product.sale_quantity
-            } else {
-                product.labour_cost = product.sale_quantity * 5
-            }
         },
 
         getCustomerDetails() {
@@ -953,7 +854,8 @@ export default {
                 form.products.push({
                     id: product.id,
                     quantity: product.sale_quantity,
-                    quantity_in_unit: product.quantity,
+                    discount: product.discount,
+                    discount_type: 'percentage',
                     price: product.price,
                     purchase_price: product.purchasePrice,
                     line_total: product.total_price
@@ -1044,9 +946,13 @@ export default {
                     details.product.purchasePrice = details.purchase_price
                     details.product.total_price = details.line_total
                     details.product.sale_price = details.sale_price
+                    details.product.serial_number = details.serial_number
+                    details.product.discount = details.discount
                     details.product.price = details.sale_price
-                    details.product.product_kg = details.quantity
-                    details.product.quantity = Object.assign({}, details.quantity_in_unit)
+                    // details.product.quantity = Object.assign({}, details.quantity_in_unit)
+                    details.product.quantity = {
+                        0: details.quantity
+                    }
                     this.selectedProducts.push(details.product);
                 })
                 // select first bank account

@@ -100,11 +100,9 @@ class RetailSaleController extends Controller
                     'product_id'        => $product['id'],
                     'purchase_price'    => $product['purchase_price'],
                     'sale_price'        => $product['price'],
-                    'vat'               => 0.00,
-                    'discount'          => 0.00,
+                    'discount'          => $product['discount'],
                     'quantity'          => $product['quantity'],
-                    'quantity_in_unit'  => $product['quantity_in_unit'],
-                    'discount_type'     => 'flat',
+                    'discount_type'     => $product['discount_type'],
                     'line_total'        => $product['line_total'],
                 ];
 
@@ -256,11 +254,9 @@ class RetailSaleController extends Controller
                     'product_id'     => $product['id'],
                     'purchase_price' => $product['purchase_price'],
                     'sale_price'     => $product['price'],
-                    'vat'            => 0.00,
-                    'discount'       => 0.00,
+                    'discount'       => $product['discount'],
                     'quantity'       => $product['quantity'],
-                    'quantity_in_unit' => $product['quantity_in_unit'],
-                    'discount_type'  => 'flat',
+                    'discount_type'  => $product['discount_type'],
                     'line_total'     => $product['line_total'],
                 ];
 

@@ -101,6 +101,7 @@
                             <th>@lang('contents.description')</th>
                             <th class="text-right">@lang('contents.unit_price')</th>
                             <th class="text-right">@lang('contents.quantity') (@lang('contents.in_unit'))</th>
+                            <th class="text-right">@lang('contents.discount')</th>
                             <th class="text-right">@lang('contents.line_total') </th>
                         </tr>
                         </thead>
@@ -118,10 +119,17 @@
                                     <span class="text-wrap">{{ $details->product->name }}</span>
                                     {{--<p>your product details will go here</p>--}}
                                 </td>
+
                                 <td class="text-right">{{ number_format(($details->sale_price), 2) }}</td>
+
                                 <td class="text-right">
                                     {{ $details->total_quantity_in_format['display'] }}
                                 </td>
+
+                                <td class="text-right">
+                                    {{ number_format((($details->sale_price * $details->quantity) * $details->discount) / 100, 2) }}
+                                </td>
+
                                 <td class="text-right">{{ number_format($details->line_total, 2) }}</td>
                             </tr>
                         @endforeach
@@ -136,10 +144,6 @@
                         <div class="col-12">
                             <!-- Total -->
                             <div class="total text-right">
-                                <div class="single">
-                                    @lang('contents.total_kg') <span>{{ $total_kg }} @lang('contents.kg')</span>
-                                </div>
-
                                 <div class="single">
                                     @lang('contents.subtotal') <span>{{ number_format($sale->subtotal, 2) }}</span>
                                 </div>
@@ -160,17 +164,6 @@
                                     </div>
                                 @endif
 
-                                @php
-                                $today_total = $sale->subtotal
-                                                + $sale->labour_cost
-                                                + $sale->transport_cost
-                                                - $sale->total_discount;
-                                @endphp
-
-                                <div class="single">
-                                    Today Total <span>{{ number_format($today_total, 2) }}</span>
-                                </div>
-
                                 <div class="single">
                                     @lang('contents.previous_balance') <span>{{ number_format($sale->previous_balance, 2) }}</span>
                                 </div>
@@ -183,32 +176,11 @@
                                     @lang('contents.paid') <span>{{ number_format($sale->paid, 2) }}</span>
                                 </div>
 
-                                @php
-                                $today_due = $today_total - $sale->paid;
-
-                                if($today_due < 0){
-                                    $today_due = 0;
-                                }
-                                @endphp
-
-                                <div class="single">
-                                    Today Due <span>{{ number_format($today_due, 2) }}</span>
-                                </div>
-
                                 @if($sale->due)
                                     <div class="single">
                                         @lang('contents.due') <span>{{ number_format($sale->due , 2) }}</span>
                                     </div>
                                 @endif
-
-{{--                                <div class="single">--}}
-{{--                                    @lang('contents.previous_balance')--}}
-{{--                                    <span>{{ number_format($sale->previous_balance, 2) }}</span>--}}
-{{--                                </div>--}}
-
-{{--                                <div class="single">--}}
-{{--                                    @lang('contents.current_balance') <span> {{ number_format($sale->customer_balance, 2) }} </span>--}}
-{{--                                </div>--}}
                             </div>
                             <!-- End of the total -->
 

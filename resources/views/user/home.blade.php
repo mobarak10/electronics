@@ -245,6 +245,47 @@
                 </div>
                 <!-- End of Card wrapper -->
 
+                <div class="row mb-2">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="m-0 text-center">Today Installment's List</h5>
+                                </div>
+
+                                <div class="card-body p-0">
+
+                                    <table class="table table-hover table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>@lang('contents.customer_name')</th>
+                                            <th>@lang('contents.phone')</th>
+                                            <th>Address</th>
+                                            <th class="text-right">Amount</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        @foreach($installments as $installment)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $installment->hireSale->customer->name ?? '' }}</td>
+                                                <td>{{ $installment->hireSale->customer->phone ?? '' }}</td>
+                                                <td>{{ $installment->hireSale->customer->address ?? 'N/A' }}</td>
+                                                <td class="text-right">{{ number_format($installment->installment_amount, 2) }}</td>
+                                            </tr>
+                                        @endforeach
+                                        <tr>
+                                            <td colspan="6" class="text-center">No Installment</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                 <!-- Chart wrapper -->
                 <div class="chart-wrapper">
                     <div class="row">

@@ -9,12 +9,12 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="d-none mt-2 text-center d-print-block">
-                        <h5 class="mb-0 center" style="font-size: 25px"> <strong>Haat Store</strong> </h5>
-                        <p class="mb-0" style="font-size: 18px"><strong>Product Stock</strong></p>
-                        <p class="mb-0" style="font-size: 15px">{{ Carbon\Carbon::now()->format('j F, Y h:i:s a') }}</p>
+                        <h1 class="text-center d-none d-print-block">Shop: {{ config('print.print_details.name') }}</h1>
+                        <p style="margin-bottom: 0 !important;" class="text-center d-none d-print-block">Phone: {{ config('print.print_details.mobile') }}</p>
+                        <p class="text-center d-none d-print-block">Address: {{ config('print.print_details.address') }}</p>
                     </div>
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="m-0 print-none">@lang('contents.test.hi') @lang('contents.stock')</h5>
+                        <h5 class="m-0 print-none">@lang('contents.stock')</h5>
 
                         <div class="print-none" role="group" aria-label="Action area">
                             <button class="btn btn-info" type="button" title="Search product" data-toggle="collapse" data-target="#searchCollapse" aria-expanded="false" aria-controls="collapseSearch">
@@ -105,8 +105,6 @@
                                 <th scope="col">Category</th>
                                 <th scope="col" style=" min-width: 150px;">Brand</th>
                                 <th scope="col" class="text-right" style=" min-width: 150px;">Quantity (Unit)</th>
-                                <th scope="col" class="text-right">Quantity (KG)</th>
-                                <th scope="col" class="text-right">Quantity (Bag)</th>
                                 <th scope="col" class="text-right">PPU</th>
                                 <th scope="col" class="text-right">PPU Value</th>
                                 <th scope="col" class="text-right">SPU</th>
@@ -137,31 +135,10 @@
 
 
                                     <td class="text-right">
-                                        {{ ($product->total_product_quantity_warehouse_wise > 0) ? \App\Helpers\Converter::convert($product->total_product_quantity_warehouse_wise, $product->unit->code, 'd')['display'] : '-' }}
+                                        {{ ($product->total_product_quantity > 0) ? \App\Helpers\Converter::convert($product->total_product_quantity, $product->unit->code, 'd')['display'] : '-' }}
                                     </td>
 
-                                    <td class="text-right">
-                                        @if($product->category->slug == 'feed')
-                                            @php
-                                                $unit_relation = explode('/', $product->unit->relation);
-                                                $last_relation =  end($unit_relation);
-                                                $multiply_number = $last_relation == 20 ? 50 : 25;
-                                                $total_kg += $product->total_product_quantity_warehouse_wise * $multiply_number;
-                                            @endphp
-                                            {{ $product->total_product_quantity_warehouse_wise * $multiply_number. " KG" }}
-                                        @elseif($product->category->slug == 'egg')
-                                            {{ $product->total_product_quantity_warehouse_wise. " Pcs" }}
-                                        @endif
-                                    </td>
 
-                                    <td class="text-right">
-                                        @if($product->category->slug == 'feed')
-                                            @php
-                                                $total_bag += $product->total_product_quantity_warehouse_wise;
-                                            @endphp
-                                            {{ $product->total_product_quantity_warehouse_wise }}
-                                        @endif
-                                    </td>
 
 {{--                                    <td class="text-right">--}}
 {{--                                        @forelse($product->warehouses as $warehouse)--}}
@@ -180,25 +157,25 @@
 {{--                                    </td>--}}
 
                                     <td class="text-right">
-                                        {{ $product->purchase_price }}
+                                        {{ number_format($product->purchase_price, 2) }}
                                     </td>
 
                                     <td class="text-right">
                                         @php
-                                            $total_purchase_price += $product->total_product_quantity_warehouse_wise * $product->purchase_price
+                                            $total_purchase_price += $product->total_product_quantity * $product->purchase_price
                                         @endphp
-                                        {{ $product->total_product_quantity_warehouse_wise * $product->purchase_price }}
+                                        {{ number_format($product->total_product_quantity * $product->purchase_price, 2) }}
                                     </td>
 
                                     <td class="text-right">
-                                        {{ $product->dealer_price }}
+                                        {{ number_format($product->retail_price, 2) }}
                                     </td>
 
                                     <td class="text-right">
                                         @php
-                                            $total_sale_price += $product->total_product_quantity_warehouse_wise * $product->dealer_price
+                                            $total_sale_price += $product->total_product_quantity * $product->retail_price
                                         @endphp
-                                        {{ $product->total_product_quantity_warehouse_wise * $product->dealer_price }}
+                                        {{ number_format($product->total_product_quantity * $product->retail_price, 2) }}
                                     </td>
 
                                     <td class="text-right print-none">
@@ -219,9 +196,7 @@
                                 </tr>
                             @endforelse
                             <tr>
-                                <th colspan="5" class="text-right">@lang('contents.total') </th>
-                                <th class="text-right">{{ $total_kg }}</th>
-                                <th class="text-right">{{ $total_bag }}</th>
+                                <th colspan="6" class="text-right">@lang('contents.total') </th>
                                 <th class="text-right">{{ number_format($total_purchase_price, 2) }}</th>
                                 <th></th>
                                 <th class="text-right">{{ number_format($total_sale_price, 2) }}</th>

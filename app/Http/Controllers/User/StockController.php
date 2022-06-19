@@ -43,7 +43,7 @@ class StockController extends Controller
      */
     public function index() {
         $business_id = Auth::user()->business_id;
-        $products = Product::with('stock')->where('business_id', $business_id)->paginate(27);
+        $products = Product::with('stock')->where('business_id', $business_id)->paginate(35);
         $categories = Category::active()->where('business_id', $business_id)->get();
         $brands = Brand::active()->where('business_id', $business_id)->get();
         $warehouses = Warehouse::all();

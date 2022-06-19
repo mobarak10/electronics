@@ -15,6 +15,7 @@ use App\Models\Customer;
 use App\Models\Media;
 use Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Storage;
 

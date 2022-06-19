@@ -49,6 +49,14 @@ class HomeController extends Controller
         $this->data['cash'] = Cash::where('business_id', $business_id)->get();
         $this->data['account'] = BankAccount::where('business_id', $business_id)->get();
 
+//        $installments = HireSaleInstallment::with(['hireSale' => function($query) {
+//            $query->where('installment_status', 0);
+//        }])->where('installment_date', $date)
+//            ->whereHas('hireSale', function($query) {
+//                $query->where('installment_status', 0);
+//            })
+//            ->get();
+
 //        $this->data['sales'] = Sale::where('business_id', $business_id)->selectRaw("*, (subtotal + ((subtotal * vat)/100)) - CASE WHEN discount_type='flat' THEN discount ELSE (subtotal * discount)/100 END as grand_total")->whereRaw('DATE(created_at) = ?',$date)->get();
         $this->data['sales'] = Sale::where('business_id', $business_id)->where('date',$date)->get();
 

@@ -14,6 +14,7 @@ use App\Models\Party;
 use App\Models\Product;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HireSaleController extends Controller
 {
@@ -24,6 +25,7 @@ class HireSaleController extends Controller
         'submenu' => '',
         'header'  => false
     ];
+    private $hire_sale;
 
     public function __construct()
     {
@@ -53,7 +55,7 @@ class HireSaleController extends Controller
             foreach (request()->condition as $input => $value) {
                 if ($value != null) {
                     if ($input == 'phone') {
-                        $where[] = ['party_id', '=', $party];
+                        $where[] = ['customer_id', '=', $party];
                     } else {
                         $where[] = [$input, '=', $value];
                     }
@@ -114,116 +116,45 @@ class HireSaleController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->all();
-        $hire_sale_data = $request->validate([
-            'date' => 'required|date',
-            'warehouse_id' => 'required|integer',
-            'party_id' => 'required|integer',
-            'subtotal' => 'required|numeric',
-            'due' => 'nullable|numeric',
-            'added_value' => 'nullable|numeric',
-            'down_payment' => 'nullable|numeric',
-            'installment_number' => 'nullable|numeric',
-        ]);
+//        return $request->all();
+        DB::transaction(function() use($request) {
+            $hire_sale_data = $request->validate([
+                'date' => 'required|date',
+                'warehouse_id' => 'required|integer',
+                'customer_id' => 'required|integer',
+                'subtotal' => 'required|numeric',
+                'due' => 'nullable|numeric',
+                'added_value' => 'nullable|numeric',
+                'down_payment' => 'nullable|numeric',
+                'installment_number' => 'nullable|numeric',
+            ]);
 
-        $total_due = $request->due + $request->added_value;
+            $total_due = $request->due + $request->added_value;
 
-        if ($total_due >= 0){
-            $customer = Party::find($request->party_id);
-            $customer->balance = $total_due;
-            $customer->save();
-        }else{
-            $customer = Party::find($request->party_id);
-            $customer->balance = -1 * abs($total_due);
-            $customer->save();
-        }
-
-
-        $voucher_number = date('Ymd').str_pad(HireSale::max('id') + 1, 4, '0', STR_PAD_LEFT);
-        $hire_sale_data['voucher_no'] = $voucher_number;
-
-        // store data into hire sale table
-        $hire_sale = HireSale::create($hire_sale_data);
-
-        foreach ($request->cart_products as $products){
-            $data = [];
-
-            $data['product_id'] = $products['product']['id'];
-            $data['hire_sale_id'] = $hire_sale->id;
-            $data['product_serial'] = $products['product']['serial_no'];
-            $data['quantity'] = $products['product']['saleQuantity'];
-            $data['sale_price'] = $products['product']['retail_price'];
-            $data['line_total'] = $products['product']['retail_price'] * $products['product']['saleQuantity'];
-
-            $product = Product::find($products['product']['id']);
-            $current_warehouse = $product->warehouses->where('id', $request->warehouse_id)->first();
-            $present_quantity = $current_warehouse->stock->quantity;
-            $current_quantity = $present_quantity - $products['product']['saleQuantity'];
-
-            if ($current_quantity > 0) { // if current stock is available
-                $current_warehouse->stock->quantity = $current_quantity;
-                $current_warehouse->push(); // save current stock
-            } else { // if current stock empty
-                $product->warehouses()->detach($request->warehouse_id); // remove warehouse relation
+            $customer = Customer::find($request->customer_id);
+            if ($total_due >= 0){
+                $customer->increment('balance', $total_due);
+            }else{
+                $customer->decrement('balance', $total_due);
             }
 
-            // store data into hire sale product table
-            HireSaleProduct::create($data);
-        }
+            $voucher_number = date('Ymd').str_pad(HireSale::max('id') + 1, 4, '0', STR_PAD_LEFT);
+            $hire_sale_data['voucher_no'] = $voucher_number;
 
-        if ($request->where === 'cash') {
-            $payment_data = [];
+            // store data into hire sale table
+            $this->hire_sale = HireSale::create($hire_sale_data);
+            $hire_sale = $this->hire_sale;
 
-            $cash = Cash::find($request->cash_id); // find cash
-            $cash->increment('amount', $request->down_payment); // increment cash balance
+            // store hire sale product
+            $this->hireSaleProduct($request, $hire_sale);
+            // store hire sale payment
+            $this->hireSalePayment($request, $hire_sale);
+            // store hire sale installment
+            $this->hireSaleInstallment($request, $hire_sale);
 
-            $payment_data['payment_method'] = 'cash';
-            $payment_data['hire_sale_id'] = $hire_sale->id;
-            $payment_data['cash_id'] = $request->cash_id;
+        });
 
-            HireSalePayment::create($payment_data);
-        }
-        elseif ($request->where === 'bank') {
-            $payment_data = [];
-
-            $bank_account = BankAccount::find($request->bank_account_id); // find bank account
-            $bank_account->increment('balance', $request->down_payment); // increment bank account balance
-
-            $payment_data['payment_method'] = 'bank';
-            $payment_data['bank_account_id'] = $request->bank_account_id;
-            $payment_data['hire_sale_id'] = $hire_sale->id;
-            $payment_data['check_no'] = $request->check_number;
-            $payment_data['branch'] = $request->branch;
-            $payment_data['issue_date'] = $request->issue_date;
-
-            HireSalePayment::create($payment_data);
-        }
-        elseif ($request->where === 'bkash') {
-            $payment_data = [];
-
-            $payment_data['payment_method'] = 'bkash';
-            $payment_data['hire_sale_id'] = $hire_sale->id;
-            $payment_data['bkash_number'] = $request->bkash_no;
-
-            HireSalePayment::create($payment_data);
-        }
-
-        $sale_date = $request->date;
-        $now = strtotime($sale_date);
-
-        for ($i = 1; $i <= $request->installment_number; $i++) {
-            $date = date('Y-m-d', strtotime('+' . $i .' month', $now));
-
-            $installment_data = [];
-
-            $installment_data['installment_date'] = $date;
-            $installment_data['hire_sale_id'] = $hire_sale->id;
-            $installment_data['installment_amount'] = $request->installment_amount;
-
-            HireSaleInstallment::create($installment_data);
-        }
-
-        return response($hire_sale, 200);
+        return response($this->hire_sale, 200);
     }
 
     /**
@@ -273,7 +204,7 @@ class HireSaleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $request->all();
     }
 
     /**
@@ -285,5 +216,106 @@ class HireSaleController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * store hire sale product
+     * @param $request
+     * @param $hire_sale
+     * @return void
+     */
+    public function hireSaleProduct($request, $hire_sale)
+    {
+        foreach ($request->products as $product){
+            $data = [];
+
+            $data['product_id'] = $product['id'];
+            $data['hire_sale_id'] = $hire_sale->id;
+            $data['product_serial'] = $product['serial_number'];
+            $data['quantity'] = $product['quantity'];
+            $data['sale_price'] = $product['sale_price'];
+            $data['line_total'] = $product['line_total'];
+
+            $product = Product::find($product['id']);
+            $current_warehouse = $product->warehouses->where('id', $request->warehouse_id)->first();
+            $present_quantity = $current_warehouse->stock->quantity;
+            $current_quantity = $present_quantity - $product['quantity'];
+
+            $current_warehouse->stock->quantity = $current_quantity;
+            $current_warehouse->push(); // save current stock
+
+            // store data into hire sale product table
+            HireSaleProduct::create($data);
+        }
+    }
+
+    /**
+     * store hire sale payment data
+     * @param $request
+     * @param $hire_sale
+     * @return void
+     */
+    public function hireSalePayment($request, $hire_sale)
+    {
+        if ($request->where === 'cash') {
+            $payment_data = [];
+
+            $cash = Cash::find($request->cash_id); // find cash
+            $cash->increment('amount', $request->down_payment); // increment cash balance
+
+            $payment_data['payment_method'] = 'cash';
+            $payment_data['hire_sale_id'] = $hire_sale->id;
+            $payment_data['cash_id'] = $request->cash_id;
+
+            HireSalePayment::create($payment_data);
+        }
+        elseif ($request->where === 'bank') {
+            $payment_data = [];
+
+            $bank_account = BankAccount::find($request->bank_account_id); // find bank account
+            $bank_account->increment('balance', $request->down_payment); // increment bank account balance
+
+            $payment_data['payment_method'] = 'bank';
+            $payment_data['bank_account_id'] = $request->bank_account_id;
+            $payment_data['hire_sale_id'] = $hire_sale->id;
+            $payment_data['check_no'] = $request->check_number;
+            $payment_data['branch'] = $request->branch;
+            $payment_data['issue_date'] = $request->issue_date;
+
+            HireSalePayment::create($payment_data);
+        }
+        elseif ($request->where === 'bkash') {
+            $payment_data = [];
+
+            $payment_data['payment_method'] = 'bkash';
+            $payment_data['hire_sale_id'] = $hire_sale->id;
+            $payment_data['bkash_number'] = $request->bkash_no;
+
+            HireSalePayment::create($payment_data);
+        }
+    }
+
+    /**
+     * store hire sale installment data
+     * @param $request
+     * @param $hire_sale
+     * @return void
+     */
+    public function hireSaleInstallment($request, $hire_sale)
+    {
+        $sale_date = $request->date;
+        $now = strtotime($sale_date);
+
+        for ($i = 1; $i <= $request->installment_number; $i++) {
+            $date = date('Y-m-d', strtotime('+' . $i .' month', $now));
+
+            $installment_data = [];
+
+            $installment_data['installment_date'] = $date;
+            $installment_data['hire_sale_id'] = $hire_sale->id;
+            $installment_data['installment_amount'] = $request->installment_amount;
+
+            HireSaleInstallment::create($installment_data);
+        }
     }
 }

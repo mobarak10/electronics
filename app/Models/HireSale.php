@@ -11,7 +11,7 @@ class HireSale extends Model
         'date',
         'voucher_no',
         'warehouse_id',
-        'party_id',
+        'customer_id',
         'previous_balance',
         'subtotal',
         'due',

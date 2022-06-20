@@ -121,7 +121,7 @@
                                                title="View Details">
                                                 <i class="fa fa-eye"></i>
                                             </a>
-                                            <a href="{{ route('hire-sale.edit', $sale->id) }}" class="btn btn-sm btn-success"
+                                            <a href="{{ route('hire-sale.edit', $sale->id) }}" class="btn btn-sm btn-success {{ count($sale->installmentCollection) > 0 || $sale->installment_status ? 'disabled' : '' }}"
                                                title="View Details">
                                                 <i class="fa fa-pencil"></i>
                                             </a>

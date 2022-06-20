@@ -57,7 +57,7 @@
                                         <td><input
                                             type="text"
                                             class="form-control"
-                                            v-model.trim="product.serial_no">
+                                            v-model="product.serial_number">
                                         </td>
                                         <td class="text-right">{{ product.total_product_quantity }}</td>
 
@@ -448,7 +448,7 @@ export default {
                 this.cartProducts.push(value);
                 const newProduct = {
                     ...value,
-                    serial_no: null,
+                    serial_number: null,
                     saleQuantity: 1,
                     total_price: value.retail_price,
                 };
@@ -526,6 +526,7 @@ export default {
                     id: product.id,
                     quantity: product.saleQuantity,
                     quantity_in_unit: product.quantity_in_unit,
+                    serial_number: product.serial_number,
                     sale_price: product.retail_price,
                     purchase_price: product.purchase_price,
                     line_total: product.total_price
@@ -547,7 +548,7 @@ export default {
             form.bkash_no = this.bkashNo;
             form.check_no = this.chequeNo;
             form.issue_date = this.issueDate;
-            form.party_id = this.customerId;
+            form.customer_id = this.customerId;
             form.down_payment = this.downPayment;
             form.installment_number = this.installmentNumber;
             form.installment_amount = this.installmentAmount;
@@ -563,7 +564,7 @@ export default {
 
         proceedToUpdateHiresale(data) {
             this.$awn.asyncBlock(
-                axios.post(baseURL + "user/hire-sale/" + this.oldHiresale.id, data),
+                axios.put(baseURL + "user/hire-sale/" + this.oldHiresale.id, data),
                 response => {
                     console.log(response.data)
                 }
@@ -573,7 +574,8 @@ export default {
             this.$awn.asyncBlock(
                 axios.post(baseURL + "user/hire-sale", data),
                 response => {
-                    console.log(response.data)
+                    // console.log(response.data)
+                    window.location.href = baseURL + 'user/hire-sale/' + response.data.voucher_no;
                 }
             );
         },

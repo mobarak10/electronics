@@ -552,7 +552,7 @@ export default {
             form.installment_number = this.installmentNumber;
             form.installment_amount = this.installmentAmount;
             form.bank_account_id = this.bankAccountId;
-            form.warehouse_id = this.warehouse_id;
+            form.warehouse_id = this.warehouseId;
 
             if (this.oldHiresale) {
                 return this.proceedToUpdateHiresale(form)

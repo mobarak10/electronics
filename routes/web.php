@@ -255,6 +255,7 @@ Route::group(['namespace' => 'User'], function () {
         // <!-- transaction balance from customer to supplier or vise-versa. -->
         'user/transaction'              => 'TransactionController', // transaction resource route
         // <!-- transaction balance from customer to supplier or vise-versa. -->
+        'user/hire-sale'                => 'HireSaleController', // hire sale resource route
     ]);
 
     /*------------------AJAX Route Start------------------*/

@@ -30,45 +30,67 @@
                                 <strong class="d-inline-block w-25"> Voucher No </strong>
                                 <span> : {{ $hire_sale->voucher_no }} </span>
                             </li>
+
                             <li class="list-group-item bg-transparent border-0 py-1  pl-0">
                                 <strong class="d-inline-block w-25"> Name </strong>
-                                <span> : {{ $hire_sale->customer->name }} </span>
+                                <span> : {{ $hire_sale->customer->name ?? '' }} </span>
                             </li>
-{{--                            <li class="list-group-item bg-transparent border-0 py-1  pl-0">--}}
-{{--                                <strong class="d-inline-block w-25"> Customer ID </strong>--}}
-{{--                                <span> : SMH12345 </span>--}}
-{{--                            </li>--}}
+
                             <li class="list-group-item bg-transparent border-0 py-1  pl-0">
                                 <strong class="d-inline-block w-25"> Address </strong>
-                                <span> : {{ $hire_sale->customer->address }} </span>
+                                <span> : {{ $hire_sale->customer->address ?? '' }} </span>
                             </li>
+
                             <li class="list-group-item bg-transparent border-0 py-1  pl-0">
-                                <strong class="d-inline-block w-25"> 1<sup>st</sup> Guarantor </strong>
-                                <span> : N/A </span>
+                                <strong class="d-inline-block w-25"> 1<sup>st</sup> Guarantor Name </strong>
+                                <span> : @foreach ($hire_sale->customer->metas as $meta)
+                                        {{ $meta->meta_key == 'first_guarantor_name' ? $meta->meta_value : '' }}
+                                    @endforeach
+                                </span>
+                            </li>
+
+                            <li class="list-group-item bg-transparent border-0 py-1  pl-0">
+                                <strong class="d-inline-block w-25"> 1<sup>st</sup> Guarantor Mobile </strong>
+                                <span> : @foreach ($hire_sale->customer->metas as $meta)
+                                        {{ $meta->meta_key == 'first_guarantor_mobile' ? $meta->meta_value : '' }}
+                                    @endforeach
+                                </span>
                             </li>
                         </ul>
                     </div>
                     <div class="col-md-6">
                         <ul class="list-group rounded-0">
                             <li class="list-group-item bg-transparent border-0 py-1  pl-0">
-                                <strong class="d-inline-block w-25"> Father's Name </strong>
-                                <span> : wer </span>
-                            </li>
-                            <li class="list-group-item bg-transparent border-0 py-1  pl-0">
                                 <strong class="d-inline-block w-25"> Mobile </strong>
-                                <span> : 0000000000000 </span>
+                                <span> : {{ $hire_sale->customer->phone ?? '' }} </span>
                             </li>
+
                             <li class="list-group-item bg-transparent border-0 py-1  pl-0">
+                                <strong class="d-inline-block w-25"> Sale Date </strong>
+                                <span> : {{ $hire_sale->date->format('Y-m-d') }} </span>
+                            </li>
+
+                            <li class="list-group-item bg-transparent d-none d-print-block border-0 py-1  pl-0">
                                 <strong class="d-inline-block w-25"> Print Time </strong>
-                                <span> : 2021-09-20 - 12:58:10 PM </span>
+                                <span> : {{ date('Y-m-d h:i:s A') }} </span>
                             </li>
+
                             <li class="list-group-item bg-transparent border-0 py-1  pl-0">
-                                <strong class="d-inline-block w-25"> Installment Day </strong>
-                                <span> :  </span>
+                                <strong class="d-inline-block w-25"> 2<sup>st</sup> Guarantor Name </strong>
+                                <span> :
+                                    @foreach ($hire_sale->customer->metas as $meta)
+                                        {{ $meta->meta_key == 'second_guarantor_name' ? $meta->meta_value : '' }}
+                                    @endforeach
+                                </span>
                             </li>
+
                             <li class="list-group-item bg-transparent border-0 py-1  pl-0">
-                                <strong class="d-inline-block w-25"> 2<sup>st</sup> Guarantor </strong>
-                                <span> : N/A </span>
+                                <strong class="d-inline-block w-25"> 2<sup>st</sup> Guarantor Mobile </strong>
+                                <span> :
+                                    @foreach ($hire_sale->customer->metas as $meta)
+                                        {{ $meta->meta_key == 'second_guarantor_mobile' ? $meta->meta_value : '' }}
+                                    @endforeach
+                                </span>
                             </li>
                         </ul>
                     </div>
@@ -161,11 +183,17 @@
                                     <td class="text-right">COLLECTED AMOUNT</td>
                                     <td class="text-right">DUE</td>
                                 </tr>
+                                @php
+                                    $total_paid = 0;
+                                @endphp
                                 @foreach($hire_sale->installmentCollection as $installment)
                                     <tr>
-                                        <td>{{ $installment->created_at->format('Y-m-d') }}</td>
+                                        <td>{{ $installment->date }}</td>
+                                        @php
+                                            $total_paid += $installment->total_paid;
+                                        @endphp
                                         <td class="text-right">{{ number_format($installment->total_paid, 2) }}</td>
-                                        <td class="text-right">{{ number_format(($hire_sale->installment_amount -$installment->total_paid), 2) }}</td>
+                                        <td class="text-right">{{ number_format((ceil($hire_sale->hireSaleInstallments->sum('installment_amount') - $total_paid)), 2) }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -174,13 +202,14 @@
                     </div>
 
                 </div>
-                <div class="row mt-5">
+                <div class="row">
                     <div class="col-6 text-center mt-5">
                         <p class="d-inline-block border-top border-dark px-2">Signature of Customer</p>
                     </div>
                     <div class="col-6 text-center mt-5">
-                        <p class="d-inline-block border-top border-dark px-5">MaxSOP</p>
+                        <p class="d-inline-block border-top border-dark px-5">ভাই ভাই ট্রেডার্স</p>
                     </div>
+                    <strong class="col-12 d-none text-center d-print-block">Developed By MAXSOP</strong>
                 </div>
             </div>
         </div>

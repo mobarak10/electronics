@@ -85,6 +85,7 @@
                                             <th class="text-right">{{lang.stock}}</th>
                                             <th>{{lang.quantity}}</th>
                                             <th>{{lang.sale}} {{lang.price}}</th>
+                                            <th>{{lang.discount}} {{ '%' }}</th>
                                             <th class="text-right">{{lang.total}}</th>
                                             <th class="text-center print-none">
                                                 {{lang.action}}
@@ -156,16 +157,26 @@
                                                     type="number"
                                                     step="any"
                                                     class="form-control form-control-sm"
-                                                    v-model.trim="product.sale_price"
+                                                    v-model.trim="product.retail_price"
                                                 />
                                             </td>
+                                            <td>
+                                                <!-- discount Price -->
+                                                <input
+                                                    type="number"
+                                                    step="any"
+                                                    class="form-control form-control-sm"
+                                                    v-model.trim="product.discount"
+                                                />
+                                            </td>
+
                                             <td class="text-right">
                                                 <div>
                                                     {{
                                                         Number.parseFloat(
                                                             (product.total_price =
-                                                                Math.ceil(parseFloat(product.sale_quantity || 0)
-                                                                    * parseFloat(product.sale_price || 0)))).toFixed(2)
+                                                                (Math.ceil(parseFloat(product.sale_quantity || 0)
+                                                                    * parseFloat(product.retail_price || 0))) - ((product.sale_quantity * product.retail_price) * product.discount) / 100 )).toFixed(2)
                                                     }}
                                                 </div>
                                             </td>
@@ -845,6 +856,8 @@ export default {
                     sale_quantity: 0,
                     total_price: 0,
                     error: '',
+                    discount: 0,
+                    discount_type: 'percentage',
                     display_quantity: displayQuantity,
                     purchasePrice: value.stock.average_purchase_price,
                 };
@@ -925,7 +938,9 @@ export default {
                     id: product.id,
                     quantity: product.sale_quantity,
                     quantity_in_unit: product.quantity,
-                    price: product.sale_price,
+                    price: product.retail_price,
+                    discount: product.discount,
+                    discount_type: product.discount_type,
                     purchase_price: product.purchasePrice,
                     line_total: product.total_price
                 });

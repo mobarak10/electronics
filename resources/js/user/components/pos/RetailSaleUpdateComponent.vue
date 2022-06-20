@@ -805,9 +805,9 @@ export default {
                 const newProduct = {
                     ...value,
                     sale_quantity: 0,
-                    price: 0,
+                    price: value.retail_price,
                     total_price: 0,
-                    discount: product.discount,
+                    discount: 0,
                     discount_type: 'percentage',
                     display_quantity: displayQuantity,
                     purchasePrice: value.stock.average_purchase_price,

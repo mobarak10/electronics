@@ -91,30 +91,30 @@
                 </ul>
             </li>
 
-{{--            <li id="pre-order" class="dropdown">--}}
-{{--                <a href="#">--}}
-{{--                    <i class="fa fa-shopping-cart"></i>--}}
-{{--                    <span title="Point of Sale">@lang('contents.pre_order')</span>--}}
-{{--                    <span class="float-right">--}}
-{{--                        <i class="fa fa-angle-right right" aria-hidden="true"></i>--}}
-{{--                        <i class="fa fa-angle-down down" aria-hidden="true"></i>--}}
-{{--                    </span>--}}
-{{--                </a>--}}
+            <li id="hire-sale" class="dropdown">
+                <a href="#">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span title="Point of Sale">@lang('contents.hire_sale')</span>
+                    <span class="float-right">
+                        <i class="fa fa-angle-right right" aria-hidden="true"></i>
+                        <i class="fa fa-angle-down down" aria-hidden="true"></i>
+                    </span>
+                </a>
 
-{{--                <ul>--}}
-{{--                    <li id="list">--}}
-{{--                        <a href="{{ route('preOrder.index') }}">--}}
-{{--                            <span title="Pre order list">@lang('contents.all') @lang('contents.pre_order')</span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
+                <ul>
+                    <li id="list">
+                        <a href="{{ route('hire-sale.index') }}">
+                            <span title="Pre order list">@lang('contents.all') @lang('contents.hire_sale')</span>
+                        </a>
+                    </li>
 
-{{--                    <li id="add">--}}
-{{--                        <a href="{{ route('preOrder.create') }}">--}}
-{{--                            <span title="New pre order">@lang('contents.new') @lang('contents.pre_order')</span>--}}
-{{--                        </a>--}}
-{{--                    </li>--}}
-{{--                </ul>--}}
-{{--            </li>--}}
+                    <li id="add">
+                        <a href="{{ route('hire-sale.create') }}">
+                            <span title="New pre order">@lang('contents.new') @lang('contents.hire_sale')</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
             <!-- sale return start --->
             <li id="sale-return" class="dropdown">

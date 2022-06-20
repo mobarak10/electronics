@@ -8,6 +8,7 @@ return [
     'register' => 'Register',
     'company' => 'Prototype UI',
     'en' => 'EN',
+    'hire_sale' => 'Hire Sale',
     'bn' => 'BN',
     'pos' => 'POS',
     'total_kg' => 'Total KG',

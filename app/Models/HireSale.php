@@ -29,7 +29,7 @@ class HireSale extends Model
      */
     public function customer()
     {
-        return $this->belongsTo(Party::class, 'party_id', 'id');
+        return $this->belongsTo(Customer::class);
     }
 
     /**

@@ -8,6 +8,7 @@
 @section('content')
     <!-- pos -->
     <hire-sale-component
+        :old-hiresale="{{$old_hiresale}}"
         :warehouses="{{ $warehouses }}"
         :cashes="{{ $cashes }}"
         :bank-accounts="{{ $bank_accounts }}"

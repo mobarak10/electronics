@@ -176,6 +176,11 @@ Vue.component(
     "production-in-create-component",
     require("./user/components/production/ProductionInCreateComponent.vue")
 );
+// hire sale component
+Vue.component(
+    "hire-sale-component",
+    require("./user/components/pos/HireSaleComponent.vue")
+);
 
 // sale return component
 Vue.component("sale-return-component",require("./user/components/pos/SaleReturnComponent"));

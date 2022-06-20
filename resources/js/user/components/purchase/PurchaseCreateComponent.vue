@@ -348,38 +348,6 @@
                                         </div>
                                         <!-- transport cost End -->
 
-                                        <!-- Today Total Start -->
-                                        <div class="form-group row">
-                                            <label
-                                                class="text-right col-3 col-form-label"
-                                                for="today-total">
-                                                Today Total
-                                            </label>
-
-                                            <div class="col-9">
-                                                <div class="input-group input-group-sm">
-                                                    <input
-                                                        type="number"
-                                                        class="form-control form-control-sm"
-                                                        id="today-total"
-                                                        autocomplete="off"
-                                                        disabled
-                                                        :value="
-                                                            Number.parseFloat(
-                                                                purchase_amount =
-                                                                ((parseFloat(subtotal)  + parseFloat(form.labourCost || 0) + parseFloat(form.transportCost || 0)))
-                                                                -
-                                                                parseFloat(totalDiscount || 0)).toFixed(2)"
-                                                    />
-
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">৳</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Today Total End -->
-
                                         <!-- Grand Total Start -->
                                         <div class="form-group row">
                                             <label
@@ -527,38 +495,6 @@
                                             </div>
                                         </div>
                                         <!-- bkash Extra Field End -->
-
-                                        <!-- Today Due Start -->
-                                        <div class="form-group row">
-                                            <label
-                                                class="text-right col-3 col-form-label"
-                                                for="total-due">
-                                                Today Due
-                                            </label>
-
-                                            <div class="col-9">
-                                                <div class="input-group input-group-sm">
-                                                    <input
-                                                        type="number"
-                                                        class="form-control form-control-sm"
-                                                        id="total-due"
-                                                        autocomplete="off"
-                                                        disabled
-                                                        :value="
-                                                            Number.parseFloat(
-                                                                Math.abs(
-                                                                todayDue
-                                                            )
-                                                            ).toFixed(2)"
-                                                    />
-
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">৳</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Today Due End -->
 
                                         <!-- Total Due Start -->
                                         <div class="form-group row">
@@ -960,6 +896,7 @@ export default {
             this.form.transportCost = this.oldPurchase.transport_cost
             this.form.payment.method = this.oldPurchase.payment_type
             this.form.payment.discount = this.oldPurchase.discount
+            this.form.voucher_no = this.oldPurchase.voucher_no
             this.form.payment.discountType = this.oldPurchase.discount_type
             this.form.payment.paid = this.oldPurchase.paid
             this.form.note = this.oldPurchase.note
@@ -983,13 +920,15 @@ export default {
                     if (
                         productPurchaseDetailsKey == 'purchase_price' ||
                         productPurchaseDetailsKey == 'quantity' ||
-                        productPurchaseDetailsKey == 'quantity_in_unit' ||
                         productPurchaseDetailsKey == 'discount' ||
                         productPurchaseDetailsKey == 'discount_type' ||
                         productPurchaseDetailsKey == 'line_total'
                     ) {
                         if (productPurchaseDetailsKey == 'quantity') {
                             product['purchase_quantity'] = productPurchaseDetails[productPurchaseDetailsKey]
+                            product['quantity_in_unit'] = {
+                                0: productPurchaseDetails[productPurchaseDetailsKey]
+                            }
                             continue
                         }
 

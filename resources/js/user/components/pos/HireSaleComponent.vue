@@ -152,16 +152,6 @@
                                         </div>
 
                                         <div class="row mt-2">
-                                            <label for="previous_balance" class="col-sm-2 col-form-label">Previous Balance</label>
-                                            <div class="col-sm-6">
-                                                <input type="number" disabled class="form-control" :value="Math.abs(customerBalance)" id="previous_balance">
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <input type="text" disabled :value="(customerBalance <= 0) ? 'Receivable' : 'Payable'" class="form-control">
-                                            </div>
-                                        </div>
-
-                                        <div class="row mt-2">
                                             <label for="down_payment" class="col-sm-2 col-form-label">Down Payment</label>
                                             <div class="col-sm-6">
                                                 <input
@@ -481,7 +471,6 @@ export default {
 
         getCustomerDetails(id) {
             let customer = this.customers.find(customer => customer.id === id)
-            this.customerBalance = this.oldHiresale ? this.oldHiresale.previous_balance : customer.balance
             this.customerMobile = customer.phone
             this.customerAddress = customer.address
         },
@@ -560,7 +549,6 @@ export default {
             form.issue_date = this.issueDate;
             form.party_id = this.customerId;
             form.down_payment = this.downPayment;
-            form.previous_balance = this.customerBalance;
             form.installment_number = this.installmentNumber;
             form.installment_amount = this.installmentAmount;
             form.bank_account_id = this.bankAccountId;

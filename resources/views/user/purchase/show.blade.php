@@ -121,16 +121,6 @@
                                 </div>
 
                                 <div class="single">
-                                    @php
-                                        $today_total = $purchase->subtotal
-                                                        + $purchase->labour_cost
-                                                        + $purchase->transport_cost
-                                                        - $purchase->discount;
-                                    @endphp
-                                    Today Total <span>{{ number_format($today_total, 2) }}</span>
-                                </div>
-
-                                <div class="single">
                                     @lang('contents.previous_balance') <span>{{ number_format(abs($purchase->previous_balance), 2) }} {{ $purchase->previous_balance > 0 ? 'Rec' : 'Pay' }}</span>
                                 </div>
 
@@ -140,17 +130,6 @@
 
                                 <div class="single">
                                     @lang('contents.paid') <span>{{ number_format($purchase->paid, 2) }}</span>
-                                </div>
-
-                                <div class="single">
-                                    @php
-                                    $today_due = $today_total - $purchase->paid;
-
-                                    if($today_due < 0){
-                                        $today_due = 0;
-                                    }
-                                    @endphp
-                                    Today Due <span>{{ number_format($today_due, 2) }}</span>
                                 </div>
 
                                 <div class="single">

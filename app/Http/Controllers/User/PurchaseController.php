@@ -129,9 +129,6 @@ class PurchaseController extends Controller
                     'product_id' => $product['id'],
                     'purchase_price' => $product['purchase_price'],
                     'quantity' => $product['quantity'],
-                    'quantity_in_unit' => $product['quantity_in_unit'],
-                    'discount' => 0.00,
-                    'discount_type' => 'flat',
                     'line_total' => $product['line_total'],
                 ];
 
@@ -390,9 +387,6 @@ class PurchaseController extends Controller
                     'product_id' => $product['id'],
                     'purchase_price' => $product['purchase_price'],
                     'quantity' => $product['quantity'],
-                    'quantity_in_unit' => $product['quantity_in_unit'],
-                    'discount' => 0.00,
-                    'discount_type' => 'flat',
                     'line_total' => $product['line_total'],
                 ];
 

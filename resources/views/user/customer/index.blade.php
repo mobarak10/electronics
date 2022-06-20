@@ -92,7 +92,7 @@
                                     <td>{{ $loop->iteration }}.</td>
                                     <td>{{ $customer->name }}</td>
                                     <td>{{ $customer->phone }}</td>
-                                    <td class="text-right">{{ number_format(abs($customer->balance), 2) }} {{ $customer->balance >= 0 ? 'Receivable' : 'Payable' }}</td>
+                                    <td class="text-right">{{ number_format(abs($customer->balance), 2) }} ({{ $customer->balance >= 0 ? 'Receivable' : 'Payable' }})</td>
                                     <td class="text-right print-none">
                                         <a href="{{ route('customer.show', $customer->id) }}" class="btn btn-sm btn-primary" title="Customer details.">
                                             <i class="fa fa-eye" aria-hidden="true"></i>

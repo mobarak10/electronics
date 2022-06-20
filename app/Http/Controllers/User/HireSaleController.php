@@ -114,34 +114,27 @@ class HireSaleController extends Controller
      */
     public function store(Request $request)
     {
-//        return $request->all();
+        return $request->all();
         $hire_sale_data = $request->validate([
             'date' => 'required|date',
             'warehouse_id' => 'required|integer',
             'party_id' => 'required|integer',
             'subtotal' => 'required|numeric',
             'due' => 'nullable|numeric',
-            'previous_balance' => 'nullable|numeric',
             'added_value' => 'nullable|numeric',
             'down_payment' => 'nullable|numeric',
             'installment_number' => 'nullable|numeric',
         ]);
 
-        $last_hire_sale_for_customer = HireSale::where('party_id', $request->party_id)->get()->last();
-        if ($last_hire_sale_for_customer && $last_hire_sale_for_customer->status === 0){
-            $last_hire_sale_for_customer->status = 1;
-            $last_hire_sale_for_customer->save();
-        }
-
         $total_due = $request->due + $request->added_value;
 
         if ($total_due >= 0){
             $customer = Party::find($request->party_id);
-            $customer->balance = -1 * abs($total_due);
+            $customer->balance = $total_due;
             $customer->save();
         }else{
             $customer = Party::find($request->party_id);
-            $customer->balance = $total_due;
+            $customer->balance = -1 * abs($total_due);
             $customer->save();
         }
 

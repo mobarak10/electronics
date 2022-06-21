@@ -40,6 +40,14 @@ class HireSaleController extends Controller
     {
         $this->meta['submenu'] = 'list';
 
+//        $hire_sale_products = HireSaleProduct::all();
+//
+//        foreach ($hire_sale_products as $hire_sale_product){
+//            $hire_sale_product->update([
+//                'purchase_price' => $hire_sale_product->product->purchase_price
+//            ]);
+//        }
+
         $hire_sales = HireSale::with('customer.metas')->orderBy('id', 'Desc')->paginate(30);
         $date = null;
         $customers = Customer::all();
@@ -204,7 +212,11 @@ class HireSaleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return $request->all();
+//        return $request->all();
+        DB::transaction(function() use($request, $id) {
+            $old_hire_sale = HireSale::findOrFail($id);
+            $this->updateOldHireSale($old_hire_sale);
+        });
     }
 
     /**
@@ -234,6 +246,7 @@ class HireSaleController extends Controller
             $data['product_serial'] = $product['serial_number'];
             $data['quantity'] = $product['quantity'];
             $data['sale_price'] = $product['sale_price'];
+            $data['purchase_price'] = $product['purchase_price'];
             $data['line_total'] = $product['line_total'];
 
             $product = Product::find($product['id']);
@@ -317,5 +330,15 @@ class HireSaleController extends Controller
 
             HireSaleInstallment::create($installment_data);
         }
+    }
+
+    /**
+     * update old hire sale data
+     * @param $old_hire_sale
+     * @return void
+     */
+    public function updateOldHireSale($old_hire_sale)
+    {
+
     }
 }

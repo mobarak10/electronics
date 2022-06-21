@@ -9,6 +9,7 @@ class HireSaleProduct extends Model
     protected $fillable = [
         'product_id',
         'hire_sale_id',
+        'purchase_price',
         'product_serial',
         'quantity',
         'sale_price',

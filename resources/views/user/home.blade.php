@@ -266,7 +266,7 @@
                                         </thead>
 
                                         <tbody>
-                                        @foreach($installments as $installment)
+                                        @forelse($installments as $installment)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $installment->hireSale->customer->name ?? '' }}</td>
@@ -274,10 +274,11 @@
                                                 <td>{{ $installment->hireSale->customer->address ?? 'N/A' }}</td>
                                                 <td class="text-right">{{ number_format($installment->installment_amount, 2) }}</td>
                                             </tr>
-                                        @endforeach
-                                        <tr>
-                                            <td colspan="6" class="text-center">No Installment</td>
-                                        </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="6" class="text-center">No Installment</td>
+                                            </tr>
+                                        @endforelse
                                         </tbody>
                                     </table>
                                 </div>

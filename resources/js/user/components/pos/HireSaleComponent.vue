@@ -430,7 +430,7 @@ export default {
             this.cartProducts = this.oldHiresale.hire_sale_products.map((details) => {
                 details['name'] = details.product.name
                 details['model'] = details.product.model
-                details['serial_no'] = details.product_serial
+                details['serial_number'] = details.product_serial
                 details['saleQuantity'] = details.quantity
                 details['retail_price'] = details.sale_price
                 details['total_price'] = details.line_total

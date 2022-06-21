@@ -566,7 +566,7 @@ export default {
             this.$awn.asyncBlock(
                 axios.put(baseURL + "user/hire-sale/" + this.oldHiresale.id, data),
                 response => {
-                    console.log(response.data)
+                    window.location.href = baseURL + 'user/hire-sale/' + response.data.voucher_no;
                 }
             );
         },

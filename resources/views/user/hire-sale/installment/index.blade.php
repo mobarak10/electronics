@@ -14,12 +14,16 @@
                         <span class="d-none d-print-block">{{ date('d-m-Y') }}</span>
 
                         <div>
-                            <a href="{{ route('hire-sale.index') }}" class="btn btn-primary print-none" title="Refresh">
+                            <a href="{{ route('installmentCollection.index') }}" class="btn btn-primary print-none" title="Refresh">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>
                             </a>
 
                             <a href="#" onclick="window.print();" title="Print" class="btn btn-warning print-none">
                                 <i aria-hidden="true" class="fa fa-print"></i>
+                            </a>
+
+                            <a href="{{ route('installmentCollection.create') }}" class="btn btn-primary print-none" title="New Collection">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
                             </a>
                         </div>
                     </div>
@@ -32,7 +36,7 @@
                                     <th class="text-center">#</th>
                                     <th>@lang('contents.date')</th>
                                     <th>@lang('contents.invoice_no')</th>
-                                    <th>@lang('contents.customer')</th>
+                                    <th style="min-width: 130px">@lang('contents.customer')</th>
                                     <th>Paid By</th>
                                     <th class="text-right">Paid Amount</th>
                                     <th class="text-right print-none">@lang('contents.action')</th>
@@ -43,19 +47,22 @@
                                 @forelse($installments as $installment)
                                     <tr>
                                         <td class="text-center">{{ $loop->iteration }}.</td>
-                                        <td>{{ $installment->created_at->format('d F, Y') }}</td>
+                                        <td>{{ $installment->date->format('d F, Y') }}</td>
                                         <td>
                                             {{ $installment->hireSale->voucher_no }}
                                         </td>
-                                        <td>{{ $installment->party->name }}</td>
+                                        <td>{{ $installment->customer->name ?? '' }}</td>
                                         <td>{{ $installment->paid_by }}</td>
                                         <td class="text-right">{{ number_format($installment->payment_amount, 2) }}</td>
                                         <td class="text-right print-none">
-                                            <a href="{{ route('hire-sale.show', 1) }}" class="btn btn-sm btn-info"
+                                            <a href="{{ route('hire-sale.show', $installment->hireSale->voucher_no) }}" class="btn btn-sm btn-info"
                                                title="View Details">
                                                 <i class="fa fa-eye"></i>
                                             </a>
-
+                                            <a href="{{ route('installmentCollection.edit', $installment->id) }}" class="btn btn-sm btn-warning"
+                                               title="View Details">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @empty
@@ -65,10 +72,15 @@
                                 @endforelse
                                 <tr>
                                     <th colspan="5" class="text-right">Total</th>
-                                    <th colspan="3">&nbsp;</th>
+                                    <th class="text-right">{{ number_format($installments->sum('payment_amount'), 2) }}</th>
+                                    <th>&nbsp;</th>
                                 </tr>
                                 </tbody>
                             </table>
+                            <!-- paginate -->
+                            <div class="float-right mx-2">
+                                {{ $installments->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>

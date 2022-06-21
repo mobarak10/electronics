@@ -23,9 +23,9 @@ class InstallmentCollection extends Model
      * get party details
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function party()
+    public function customer()
     {
-        return $this->belongsTo(Party::class);
+        return $this->belongsTo(Customer::class);
     }
 
     /**

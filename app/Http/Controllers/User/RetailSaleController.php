@@ -324,23 +324,23 @@ class RetailSaleController extends Controller
             foreach ($removed_sale_details as $item){
                 // get deleted product
                 $details = $sale->saleDetails->where('id', $item)->first();
-                // quantity that should be add in warehouse
+                // quantity that should be added in warehouse
                 $_quantity = $details->quantity;
                 // get product
                 $product = Product::findOrFail($details->product_id);
                 // get warehouse
-                $_warehouse = $product->warehouses->where('id', $request->warehouse_id)->first();
+                $_warehouse = $product->warehouses->where('id', $sale->warehouse_id)->first();
                 if($_warehouse) {
                     //get exists quantity
                     $previous_quantity = $_warehouse->stock->quantity;
                     //update stocks
-                    $product->warehouses()->updateExistingPivot($request->warehouse_id, [
+                    $product->warehouses()->updateExistingPivot($sale->warehouse_id, [
                         'quantity' => $previous_quantity + $_quantity,
                     ]);
                 }else{ // no previous warehouse exists
                     //add new stock in for products
                     $product->warehouses()->attach([
-                        $request->orders[0]['warehouse_id'] =>  [
+                        $sale->warehouse_id =>  [
                             'quantity' => $_quantity,
                             'average_purchase_price' => $product->purchase_price,
                             'created_at' => now(),

@@ -11,7 +11,7 @@
         </div>
 
         <div class="card-body">
-            <form method="post" @submit.prevent="saveInstallment" class="row">
+            <form method="post" @submit.prevent="updateInstallment" class="row">
                 <div class="form-group col-md-3 required text-right">
                     <label for="date">Date</label>
                 </div>
@@ -23,16 +23,17 @@
                 </div>
 
                 <div class="form-group col-md-3 required text-right">
-                    <label for="customerId">Name</label>
+                    <label for="partyId">Name</label>
                 </div>
 
                 <div class="form-group col-md-6">
                     <v-select
                         :options="customers"
-                        v-model="customerId"
-                        id="customerId"
+                        v-model="partyId"
+                        id="partyId"
+                        :clearable=false
                         :reduce="customer => customer.id"
-                        @input="getCustomerDetails(customerId)"
+                        @input="getCustomerDetails(partyId)"
                         placeholder="Select customer"
                         label="name">
                         <template slot="option" slot-scope="option">
@@ -51,7 +52,7 @@
                 <div class="form-group col-md-6">
                     <div class="row">
                         <div class="col-md-7">
-                            <input v-model="customerBalance" type="text" disabled class="form-control" id="balance">
+                            <input v-model="partyBalance" type="text" disabled class="form-control" id="balance">
                         </div>
 
                         <div class="col-md-5">
@@ -67,19 +68,7 @@
                 </div>
 
                 <div class="form-group col-md-6">
-                    <v-select
-                        :options="hireSales"
-                        v-model="voucherNo"
-                        id="voucher_no"
-                        @input="getVoucherDetails"
-                        :reduce="hire_sale => hire_sale.voucher_no"
-                        placeholder="Select voucher"
-                        label="voucher_no">
-                        <template slot="option" slot-scope="option">
-                            <span class="fa" :class="option.icon"></span>
-                            {{ option.voucher_no }}
-                        </template>
-                    </v-select>
+                    <input type="text" id="voucher_no" disabled class="form-control" v-model="voucherNo">
                 </div>
                 <div class="col-md-3">
                 </div>
@@ -175,6 +164,16 @@
                     <div class="col-md-3">
                     </div>
 
+<!--                    <div class="form-group col-md-3 required text-right">-->
+<!--                        <label for="branch">Branch Name</label>-->
+<!--                    </div>-->
+
+<!--                    <div class="form-group required col-md-6">-->
+<!--                        <input type="text" id="branch" v-model="bank.branchName" class="form-control">-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3">-->
+<!--                    </div>-->
+
                     <div class="form-group col-md-3 required text-right">
                         <label for="issue_date">Issue Date</label>
                     </div>
@@ -247,8 +246,8 @@
 
 <script>
 export default {
-    name: "CreateInstallmentComponent",
-    props: ['bankAccounts', 'cashes', 'customers'],
+    name: "UpdateInstallmentComponent",
+    props: ['bankAccounts', 'cashes', 'customers', 'installment'],
     computed: {
         listUrl(){
             return baseURL + 'user/installmentCollection'
@@ -256,16 +255,16 @@ export default {
     },
     data() {
         return {
+            id: null,
             date: new Date().toISOString().slice(0, 10),
-            customerId: null,
+            partyId: null,
             cashId: null,
-            customerBalance: null,
+            partyBalance: null,
             hire_sale_id: null,
             balanceStatus: null,
             voucherNo: null,
             due: null,
             payment: null,
-            hireSales: [],
             remission: 0,
             adjustment: 0,
             paidBy: null,
@@ -277,47 +276,58 @@ export default {
                 checkNo: null,
                 branchName: null,
                 accountNo: null,
-                issueDate: new Date().toISOString().substr(0, 10)
+                issueDate: new Date().toISOString().slice(0, 10)
             }
         }
     },
 
     methods: {
+        // get previous installment data
+        initialValues() {
+            this.id = this.installment.id
+            this.partyId = this.installment.party_id
+            this.getCustomerDetails(this.installment.party_id)
+            this.payment = this.installment.payment_amount
+            this.remission = this.installment.remission
+            this.adjustment = this.installment.adjustment
+            this.paidBy = this.installment.paid_by
+            this.date = new Date(this.installment.formatted_date).toISOString().substr(0, 10)
+        },
+
+        cashDetails(id) {
+            console.log(id)
+        },
+
         getCustomerDetails(id) {
             axios.post(baseURL + 'user/get-details-from-customer/' + id)
             .then(response => {
-                this.customerBalance = this.customers.find(customer => customer.id == id).balance
-                this.hireSales = response.data
-                if (this.customerBalance >= 0){
-                    this.balanceStatus = 'Receivable'
-                }else {
-                    this.balanceStatus = 'Payable'
+                // console.log(response.data)
+                if (response.data.installment_status == 0){
+                    this.partyBalance = Math.abs(response.data.customer.balance)
+                    this.voucherNo = response.data.voucher_no
+                    this.hire_sale_id = response.data.id
+                    this.due = response.data.total_due
+                    this.installmentAmount = response.data.installment_amount
+                    this.installmentAmountStatus = "Monthly"
+                    if (response.data.customer.balance <= 0){
+                        this.balanceStatus = 'Receivable'
+                    }else {
+                        this.balanceStatus = 'Payable'
+                    }
                 }
             })
         },
-
-        getVoucherDetails() {
-            if (this.voucherNo) {
-                let hireSale = this.hireSales.find(hire_sale => hire_sale.voucher_no == this.voucherNo)
-                this.voucherNo = hireSale.voucher_no
-                this.hire_sale_id = hireSale.id
-                this.due = hireSale.total_due
-                this.installmentAmount = hireSale.installment_amount
-                this.installmentAmountStatus = "Monthly"
-            }
-        },
-
-        saveInstallment() {
+        updateInstallment() {
             if (!this.hire_sale_id){
                 alert('No installment available')
                 return
             }
             this.$awn.asyncBlock(
-                axios.post(baseURL + 'user/installmentCollection', {
+                axios.patch(baseURL + 'user/installmentCollection/' + this.id, {
                     date: this.date,
-                    customer_id: this.customerId,
+                    party_id: this.partyId,
                     cash_id: this.cashId,
-                    customer_balance: this.customerBalance,
+                    party_balance: this.partyBalance,
                     hire_sale_id: this.hire_sale_id,
                     due: this.due,
                     payment_amount: this.payment,
@@ -330,11 +340,14 @@ export default {
                     check_number: this.bank.checkNo,
                 }),
                 response => {
-                    this.$awn.success('Installment given successfully')
-                    window.location.href = baseURL + 'user/installmentCollection'
+                    console.log(response.data);
+                    // this.initialValues()
+                    //  window.location.href =
+                    //     baseURL + "user/installmentCollection/";
+                    this.$awn.success('Installment updated successfully')
                 },
                 error => {
-                    console.log(error)
+
                 }
             )
         },
@@ -342,7 +355,7 @@ export default {
 
     mounted() {
         this.cashId = this.cashes[0].id
-        // console.log(this.bankAccounts)
+        this.initialValues();
     }
 }
 </script>

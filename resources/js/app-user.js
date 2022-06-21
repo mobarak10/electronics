@@ -187,7 +187,12 @@ Vue.component("sale-return-component",require("./user/components/pos/SaleReturnC
 
 Vue.component(
     "create-installment-component",
-    require("./user/components/installment/CreateInstallmentComponent")
+    require("./user/components/installment/CreateInstallmentComponent.vue")
+);
+
+Vue.component(
+    "update-installment-component",
+    require("./user/components/installment/UpdateInstallmentComponent.vue")
 );
 
 // retail sale

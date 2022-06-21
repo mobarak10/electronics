@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Requests\CustomerRequest;
 use App\Imports\CustomerImport;
 use App\Imports\StocksImport;
+use App\Models\HireSale;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -333,6 +334,21 @@ class CustomerController extends Controller
         Excel::import(new CustomerImport(), request()->file('customer_excel'));
 
         return redirect(route('customer.index'))->with('success', 'All good!')->with($this->meta);
+    }
+
+    /**
+     * get customer details
+     * @param $id
+     */
+    public function customerDetails($id)
+    {
+        $hire_sales = HireSale::with('customer', 'hireSaleInstallments')
+            ->where('customer_id', $id)
+            ->where('installment_status', false)
+            ->orderByDesc('id')
+            ->get();
+
+        return response($hire_sales, 200);
     }
 }
 

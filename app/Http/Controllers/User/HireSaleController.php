@@ -212,11 +212,50 @@ class HireSaleController extends Controller
      */
     public function update(Request $request, $id)
     {
-//        return $request->all();
         DB::transaction(function() use($request, $id) {
             $old_hire_sale = HireSale::findOrFail($id);
             $this->updateOldHireSale($old_hire_sale);
+            $old_hire_sale->hireSalePayment->delete();
+            if (count($old_hire_sale->hireSaleInstallments) > 0) {
+                $old_hire_sale->hireSaleInstallments()->delete();
+            }
+            if (count($old_hire_sale->installmentCollection) > 0) {
+                $old_hire_sale->installmentCollection()->delete();
+            }
+
+            $hire_sale_data = $request->validate([
+                'date' => 'required|date',
+                'warehouse_id' => 'required|integer',
+                'customer_id' => 'required|integer',
+                'subtotal' => 'required|numeric',
+                'due' => 'nullable|numeric',
+                'added_value' => 'nullable|numeric',
+                'down_payment' => 'nullable|numeric',
+                'installment_number' => 'nullable|numeric',
+            ]);
+
+            $total_due = $request->due + $request->added_value;
+
+            $customer = Customer::find($request->customer_id);
+            if ($total_due >= 0){
+                $customer->increment('balance', $total_due);
+            }else{
+                $customer->decrement('balance', $total_due);
+            }
+
+            // store data into hire sale table
+            $old_hire_sale->update($hire_sale_data);
+            $this->hire_sale = $old_hire_sale;
+
+                // store hire sale product
+            $this->hireSaleProduct($request, $old_hire_sale);
+            // store hire sale payment
+            $this->hireSalePayment($request, $old_hire_sale);
+            // store hire sale installment
+            $this->hireSaleInstallment($request, $old_hire_sale);
         });
+
+        return response()->json($this->hire_sale, 200);
     }
 
     /**
@@ -240,7 +279,6 @@ class HireSaleController extends Controller
     {
         foreach ($request->products as $product){
             $data = [];
-
             $data['product_id'] = $product['id'];
             $data['hire_sale_id'] = $hire_sale->id;
             $data['product_serial'] = $product['serial_number'];
@@ -339,6 +377,63 @@ class HireSaleController extends Controller
      */
     public function updateOldHireSale($old_hire_sale)
     {
+        // TODO balance customer balance
+        $old_customer = Customer::find($old_hire_sale->customer_id);
+        if ($old_hire_sale->due) {
+            // if customer has due then decrement the due in customer balance
+            $old_customer->decrement('balance', $old_hire_sale->due);
+        }
 
+        if ($old_hire_sale->down_payment > 0) {
+            if ($old_hire_sale->hireSalePayment->payment_method == 'cash'){
+                Cash::findOrFail($old_hire_sale->hireSalePayment->cash_id)->decrement('amount', $old_hire_sale->down_payment);
+            }else{
+                BankAccount::findOrFail($old_hire_sale->hireSalePayment->bank_account_id)->decrement('balance', $old_hire_sale->down_payment);
+            }
+        }
+
+        $removed_hire_sale_products = $old_hire_sale->hireSaleProducts->pluck('id');
+        $this->removePreviousHireSaleItemUpdateQuantity($old_hire_sale, $removed_hire_sale_products);
+    }
+
+    /**
+     * remove previous hire sale product and update quantity
+     * @param $removed_hire_sale_products
+     * @return void
+     */
+    public function removePreviousHireSaleItemUpdateQuantity($old_hire_sale, $removed_hire_sale_products)
+    {
+        if ($removed_hire_sale_products){
+            foreach ($removed_hire_sale_products as $item){
+                // get deleted product
+                $details = $old_hire_sale->hireSaleProducts->where('id', $item)->first();
+                // quantity that should be add in warehouse
+                $quantity = $details->quantity;
+                // get product
+                $product = Product::findOrFail($details->product_id);
+                // get warehouse
+                $_warehouse = $product->warehouses->where('id', $old_hire_sale->warehouse_id)->first();
+                if($_warehouse) {
+                    //get exists quantity
+                    $previous_quantity = $_warehouse->stock->quantity;
+                    //update stocks
+                    $product->warehouses()->updateExistingPivot($old_hire_sale->warehouse_id, [
+                        'quantity' => $previous_quantity + $quantity,
+                    ]);
+                }else{ // no previous warehouse exists
+                    //add new stock in for products
+                    $product->warehouses()->attach([
+                        $old_hire_sale->warehouse_id =>  [
+                            'quantity' => $quantity,
+                            'average_purchase_price' => $product->purchase_price,
+                            'created_at' => now(),
+                            'updated_at' => now()
+                        ]
+                    ]);
+                }
+                // deleted that product which in no available in new updated sale
+                $old_hire_sale->hireSaleProducts->find($item)->delete();
+            }
+        }
     }
 }

@@ -91,6 +91,7 @@
                 </ul>
             </li>
 
+            {{--hire sale start--}}
             <li id="hire-sale" class="dropdown">
                 <a href="#">
                     <i class="fa fa-shopping-cart"></i>
@@ -115,6 +116,25 @@
                     </li>
                 </ul>
             </li>
+            <!-- hire sale end -->
+
+            <!-- installment collection start -->
+            <li id="installment-collection" class="dropdown">
+                <a href="#">
+                    <i class="fa fa-address-card" aria-hidden="true"></i>
+                    <span title="Company">Installment Collection</span>
+                    <span class="float-right">
+                        <i class="fa fa-angle-right right" aria-hidden="true"></i>
+                        <i class="fa fa-angle-down down" aria-hidden="true"></i>
+                    </span>
+                </a>
+
+                <ul>
+                    <li id="all"><a href="{{ route('installmentCollection.index') }}" title="Records">All Collection</a></li>
+                    <li id="new"><a href="{{ route('installmentCollection.create') }}" title="Create new">New Collection</a></li>
+                </ul>
+            </li>
+            <!-- installment collection end -->
 
             <!-- sale return start --->
             <li id="sale-return" class="dropdown">

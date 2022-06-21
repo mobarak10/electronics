@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\InstallmentCollectionRequest;
 use App\Models\BankAccount;
 use App\Models\Cash;
 use App\Models\Customer;
@@ -35,7 +36,7 @@ class InstallmentCollectionController extends Controller
     public function index()
     {
         $this->meta['submenu'] = 'all';
-        $installments = InstallmentCollection::paginate(30);
+        $installments = InstallmentCollection::orderByDesc('id')->paginate(30);
         return view('user.hire-sale.installment.index', compact('installments'))->with($this->meta);
     }
 
@@ -59,20 +60,12 @@ class InstallmentCollectionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InstallmentCollectionRequest $request)
     {
 //        return $request->all();
         DB::transaction(function () use($request) {
-            $data = $request->validate([
-                'hire_sale_id' => 'required|integer',
-                'party_id' => 'required|integer',
-                'payment_amount' => 'required',
-                'remission' => 'nullable',
-                'adjustment' => 'nullable',
-                'paid_by' => 'nullable',
-            ]);
-            $this->installment = InstallmentCollection::create($data);
-            $installment = $this->installment;
+            $data = $request->validated();
+            $installment = InstallmentCollection::create($data);
 
             if ($request->where === 'cash'){
                 Cash::findOrFail($request->cash_id)->increment('amount', $request->payment_amount);
@@ -81,28 +74,27 @@ class InstallmentCollectionController extends Controller
                 BankAccount::findOrFail($request->bank_account_id)->increment('amount', $request->payment_amount);
             }
 
-            $installment_payment = new InstallmentCollectionPayment;
-
-            $installment_payment->installment_id = $installment->id;
-            $installment_payment->payment_method = $request->where;
-            $installment_payment->cash_id = $request->cash_id;
-            $installment_payment->bank_account_id = $request->bank_account_id;
-            $installment_payment->check_number = $request->check_number;
-            $installment_payment->bkash_number = $request->bkash_number;
-
-            $installment_payment->save();
+            $installment_payment_data = [
+                'payment_method' => $request->where,
+                'cash_id' => $request->cash_id,
+                'bank_account_id' => $request->bank_account_id,
+                'check_number' => $request->check_number,
+                'bkash_number' => $request->bkash_number,
+            ];
+            $installment->installmentPayment()->create($installment_payment_data);
 
             $installment_collection = InstallmentCollection::where('hire_sale_id', $request->hire_sale_id)->get();
 
             $total_paid = $installment_collection->sum('payment_amount');
             $total_remission = $installment_collection->sum('remission');
             $total_adjustment = $installment_collection->sum('adjustment');
-
             $total_installment_paid = ($total_paid + $total_remission + $total_adjustment);
 
-            Party::findOrFail($request->party_id)->increment('balance', $total_installment_paid);
+            $today_total_paid  = ($request->payment_amount + $request->remission + $request->adjustment);
+            Customer::findOrFail($request->customer_id)->decrement('balance', $today_total_paid);
 
-            $hire_sale = HireSale::findOrFail($request->hire_sale_id);
+            $this->installment = HireSale::findOrFail($request->hire_sale_id);
+            $hire_sale = $this->installment;
 
             if ($hire_sale->due <= $total_installment_paid){
                 $hire_sale->installment_status = true;

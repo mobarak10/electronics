@@ -331,7 +331,7 @@ export default {
                 }),
                 response => {
                     this.$awn.success('Installment given successfully')
-                    window.location.href = baseURL + 'user/installmentCollection'
+                    window.location.href = baseURL + 'user/hire-sale/' + response.data.voucher_no
                 },
                 error => {
                     console.log(error)

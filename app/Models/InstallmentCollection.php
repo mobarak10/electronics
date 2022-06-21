@@ -19,6 +19,11 @@ class InstallmentCollection extends Model
         return $this->belongsTo(HireSale::class);
     }
 
+    public function installmentPayment()
+    {
+        return $this->hasOne(InstallmentCollectionPayment::class, 'installment_id', 'id');
+    }
+
     /**
      * get party details
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

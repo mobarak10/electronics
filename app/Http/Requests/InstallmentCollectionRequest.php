@@ -13,7 +13,7 @@ class InstallmentCollectionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -24,7 +24,13 @@ class InstallmentCollectionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'hire_sale_id' => 'required|integer',
+            'date' => 'required|date',
+            'customer_id' => 'required|integer',
+            'payment_amount' => 'required|numeric',
+            'remission' => 'nullable|numeric',
+            'adjustment' => 'nullable|numeric',
+            'paid_by' => 'nullable|string',
         ];
     }
 }

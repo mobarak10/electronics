@@ -157,14 +157,12 @@
                                 </tr>
                                 <tr>
                                     <td>INSTALLMENT DATE</td>
-                                    <td>CASH FOR....MONTHS</td>
                                     <td>HIRE PRICE FOR....MONTHS</td>
                                 </tr>
                                 @foreach($hire_sale->hireSaleInstallments as $installment)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $installment->installment_date->format('Y-m-d') }}</td>
-                                        <td></td>
+                                        <td>{{ $installment->installment_date->format('d F Y') }}</td>
                                         <td class="text-right">{{ number_format($installment->installment_amount, 2) }}</td>
                                     </tr>
                                 @endforeach
@@ -188,7 +186,7 @@
                                 @endphp
                                 @foreach($hire_sale->installmentCollection as $installment)
                                     <tr>
-                                        <td>{{ $installment->date }}</td>
+                                        <td>{{ $installment->date->format('d F Y') }}</td>
                                         @php
                                             $total_paid += $installment->total_paid;
                                         @endphp

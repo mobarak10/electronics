@@ -194,6 +194,8 @@ Route::group(['namespace' => 'User'], function () {
         Route::get('user/reports/supplierLedger', 'LedgerReportController@supplierLedger')->name('report.supplierLedger');
         // customer ledger report
         Route::get('user/reports/customerLedger', 'LedgerReportController@customerLedger')->name('report.customerLedger');
+        // hire sale ledger
+        Route::get('user/reports/hire-sale-ledger', 'LedgerReportController@hireSaleLedger')->name('report.hireSaleLedger');
 
         // purchase reports
         Route::get('user/reports/purchasesReport', 'PurchaseReportController@index')->name('report.purchases');

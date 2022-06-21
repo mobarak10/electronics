@@ -21,7 +21,7 @@ class HireSale extends Model
         'installment_number',
     ];
     protected $dates = ['date'];
-    protected $appends = ['due_in_sale_time', 'total_due', 'total_pay', 'installment_amount'];
+    protected $appends = ['due_in_sale_time', 'hire_sale_grand_total', 'total_due', 'total_pay', 'installment_amount'];
 
     /**
      * get customer details
@@ -73,6 +73,11 @@ class HireSale extends Model
     public function getDueInSaleTimeAttribute()
     {
         return ($this->subtotal + $this->added_value) - $this->down_payment;
+    }
+
+    public function getHireSaleGrandTotalAttribute()
+    {
+        return ($this->subtotal + $this->added_value);
     }
 
     /**

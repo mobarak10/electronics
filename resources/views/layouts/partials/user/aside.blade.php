@@ -122,7 +122,7 @@
             <li id="installment-collection" class="dropdown">
                 <a href="#">
                     <i class="fa fa-address-card" aria-hidden="true"></i>
-                    <span title="Company">Installment Collection</span>
+                    <span title="Company">@lang('contents.installment_collection')</span>
                     <span class="float-right">
                         <i class="fa fa-angle-right right" aria-hidden="true"></i>
                         <i class="fa fa-angle-down down" aria-hidden="true"></i>
@@ -130,8 +130,16 @@
                 </a>
 
                 <ul>
-                    <li id="all"><a href="{{ route('installmentCollection.index') }}" title="Records">All Collection</a></li>
-                    <li id="new"><a href="{{ route('installmentCollection.create') }}" title="Create new">New Collection</a></li>
+                    <li id="all">
+                        <a href="{{ route('installmentCollection.index') }}" title="Records">
+                            @lang('contents.all') @lang('contents.collection')
+                        </a>
+                    </li>
+                    <li id="new">
+                        <a href="{{ route('installmentCollection.create') }}" title="Create new">
+                            @lang('contents.new') @lang('contents.collection')
+                        </a>
+                    </li>
                 </ul>
             </li>
             <!-- installment collection end -->
@@ -179,28 +187,8 @@
                     </li>
                     <li id="customer"><a href="{{ route('customerDueManage.index') }}">@lang('contents.customer')</a>
                     </li>
-                    {{-- <li id="retail"><a href="{{ route('retailDueCollection.index') }}">Retail</a></li>--}}
                 </ul>
             </li>
-
-            <!-- transaction -->
-{{--            <li id="transaction" class="dropdown">--}}
-{{--                <a href="#">--}}
-{{--                    <i class="fa fa-exchange" aria-hidden="true"></i>--}}
-{{--                    <span title="Balance Transaction">@lang('contents.transaction')</span>--}}
-{{--                    <span class="float-right">--}}
-{{--                        <i class="fa fa-angle-right right" aria-hidden="true"></i>--}}
-{{--                        <i class="fa fa-angle-down down" aria-hidden="true"></i>--}}
-{{--                    </span>--}}
-{{--                </a>--}}
-
-{{--                <ul>--}}
-{{--                    <li id="list"><a href="{{ route('transaction.index') }}">@lang('contents.all')--}}
-{{--                            @lang('contents.transaction')</a></li>--}}
-{{--                    <li id="add"><a href="{{ route('transaction.create') }}">@lang('contents.new')--}}
-{{--                            @lang('contents.transaction')</a></li>--}}
-{{--                </ul>--}}
-{{--            </li>--}}
 
             <!-- product stock -->
             <li id="stock" class="dropdown">
@@ -223,13 +211,6 @@
                 </ul>
             </li>
 
-            {{-- <li id="zone">
-                <a href="{{ route('zone.index') }}">
-                    <i class="fa fa-tachometer" aria-hidden="true"></i>
-                    <span title="Zone">Zone</span>
-                </a>
-            </li> --}}
-
             <!-- customer/parties -->
             <li id="customer" class="dropdown">
                 <a href="#">
@@ -248,25 +229,6 @@
                             title="Create new">@lang('contents.create_new')</a></li>
                 </ul>
             </li>
-
-            <!-- customer/parties -->
-            {{-- <li id="installment-collection" class="dropdown">--}}
-                {{-- <a href="#">--}}
-                    {{-- <i class="fa fa-address-card" aria-hidden="true"></i>--}}
-                    {{-- <span title="Company">Installment Collection</span>--}}
-                    {{-- <span class="float-right">--}}
-                        {{-- <i class="fa fa-angle-right right" aria-hidden="true"></i>--}}
-                        {{-- <i class="fa fa-angle-down down" aria-hidden="true"></i>--}}
-                        {{-- </span>--}}
-                    {{-- </a>--}}
-
-                {{-- <ul>--}}
-                    {{-- <li id="all"><a href="{{ route('installmentCollection.index') }}" title="Records">All
-                            Collection</a></li>--}}
-                    {{-- <li id="new"><a href="{{ route('installmentCollection.create') }}" title="Create new">New
-                            Collection</a></li>--}}
-                    {{-- </ul>--}}
-                {{-- </li>--}}
 
             <!-- supplier/company -->
             <li id="supplier" class="dropdown">
@@ -345,24 +307,6 @@
                 </ul>
             </li>
             <!---- Start Loan ---->
-
-            <!-- banking -->
-            {{-- <li id="production" class="dropdown">--}}
-                {{-- <a href="#">--}}
-                    {{-- <i class="fa fa-university" aria-hidden="true"></i>--}}
-                    {{-- <span title="Production">Production</span>--}}
-                    {{-- <span class="float-right">--}}
-                        {{-- <i class="fa fa-angle-right right" aria-hidden="true"></i>--}}
-                        {{-- <i class="fa fa-angle-down down" aria-hidden="true"></i>--}}
-                        {{-- </span>--}}
-                    {{-- </a>--}}
-
-                {{-- <ul>--}}
-                    {{-- <li id="production-id"><a href="{{ route('productionIn.index') }}" title="Bank list">Production
-                            In</a></li>--}}
-                    {{-- <li id="production-out"><a href="#" title="Back account list">Production Out</a></li>--}}
-                    {{-- </ul>--}}
-                {{-- </li>--}}
 
             <!-- reports -->
             <li id="reports" class="dropdown">
@@ -455,6 +399,12 @@
                             title="Supplier Ledger Report">@lang('contents.supplier') @lang('contents.ledger')</a></li>
                     <li id="ledger-report"><a href="{{ route('report.customerLedger') }}"
                             title="Customer Ledger Report">@lang('contents.customer') @lang('contents.ledger')</a></li>
+                    <li id="hire-ledger">
+                        <a href="{{ route('report.hireSaleLedger') }}"
+                           title="Hire Sale Ledger Report">
+                            @lang('contents.hire_sale_ledger')
+                        </a>
+                    </li>
                 </ul>
             </li>
             <!-- Sms  -->

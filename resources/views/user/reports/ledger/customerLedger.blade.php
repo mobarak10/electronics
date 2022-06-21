@@ -134,10 +134,8 @@
                                                     <p>@lang('contents.product') @lang('contents.sale')</p>
                                                 @elseif ($ledger->type === 'sale_return')
                                                     <p class="text-danger">@lang('contents.product') @lang('contents.return')</p>
-                                                @elseif ($ledger->type === 'pre_order')
-                                                    <p>@lang('contents.pre_order')</p>
-                                                @elseif ($ledger->type === 'transaction')
-                                                    <p>@lang('contents.balance_transfer')</p>
+                                                @elseif($ledger->type === 'hire_sale')
+                                                    <p>@lang('contents.hire_sale') (voucher number: {{ $ledger->voucher_no }})</p>
                                                 @else
                                                     <p>@lang('contents.due_management') ({{ $ledger->description }})</p>
                                                 @endif
@@ -146,14 +144,10 @@
                                             <td class="text-right">
                                                 @if ($ledger->type === 'sale')
                                                     {{ number_format($ledger->grand_total, 2) }}
-                                                @elseif ($ledger->type === 'pre_order')
-                                                    {{ number_format($ledger->pre_order_grand_total, 2) }}
-                                                @elseif ($ledger->type === 'transaction')
-                                                    @if($ledger->transaction_from == 'customer')
-                                                        {{ number_format($ledger->amount, 2) }}
-                                                    @endif
                                                 @elseif ($ledger->type === 'sale_return')
                                                     {{ number_format($ledger->paid, 2) }}
+                                                @elseif($ledger->type === 'hire_sale')
+                                                    {{ number_format($ledger->hire_sale_grand_total, 2) }}
                                                 @elseif ($ledger->type === 'due_manage')
                                                     <p>{{ (($ledger->amount <= 0) ? number_format($ledger->amount, 2) : number_format(0, 2)) }}</p>
                                                 @endif
@@ -164,12 +158,8 @@
                                                     {{ number_format($ledger->paid, 2) }}
                                                 @elseif ($ledger->type === 'sale_return')
                                                     {{ number_format($ledger->return_grand_total, 2) }}
-                                                @elseif ($ledger->type === 'pre_order')
-                                                    {{ number_format($ledger->paid, 2) }}
-                                                @elseif ($ledger->type === 'transaction')
-                                                    @if($ledger->transaction_from == 'supplier')
-                                                        {{ number_format($ledger->amount, 2) }}
-                                                    @endif
+                                                @elseif($ledger->type === 'hire_sale')
+                                                    {{ number_format($ledger->total_pay + $ledger->down_payment, 2) }}
                                                 @elseif ($ledger->type === 'due_manage')
                                                     <p>{{ (($ledger->amount > 0) ? number_format($ledger->amount, 2) : number_format(0, 2)) }}</p>
                                                 @endif
@@ -183,15 +173,8 @@
                                                     elseif ($ledger->type === 'sale_return') {
                                                         $balance += ($ledger->paid - $ledger->return_grand_total);
                                                     }
-                                                    elseif ($ledger->type === 'pre_order') {
-                                                        $balance += ($ledger->pre_order_grand_total - $ledger->paid);
-                                                    }
-                                                    elseif ($ledger->type === 'transaction') {
-                                                        if($ledger->transaction_from == 'customer'){
-                                                            $balance += $ledger->amount;
-                                                        }else{
-                                                            $balance -= $ledger->amount;
-                                                        }
+                                                    elseif ($ledger->type === 'hire_sale') {
+                                                        $balance += ($ledger->hire_sale_grand_total - ($ledger->total_pay + $ledger->down_payment));
                                                     }
                                                     elseif ($ledger->type === 'due_manage'){
                                                         if ($ledger->amount >= 0) {
@@ -215,11 +198,8 @@
                                                         target="_blank">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
-
-                                                @elseif ($ledger->type === 'transaction')
-
-                                                @elseif ($ledger->type === 'pre_order')
-                                                    <a href="{{ route('preOrder.show', $ledger->id) }}" class="btn btn-primary btn-sm" title="View return details"
+                                                @elseif ($ledger->type === 'hire_sale')
+                                                    <a href="{{ route('hire-sale.show', $ledger->voucher_no) }}" class="btn btn-primary btn-sm" title="View return details"
                                                        target="_blank">
                                                         <i class="fa fa-eye"></i>
                                                     </a>

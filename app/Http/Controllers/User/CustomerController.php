@@ -338,15 +338,20 @@ class CustomerController extends Controller
 
     /**
      * get customer details
-     * @param $id
+     * @param Request $request
+     * @return array
      */
-    public function customerDetails($id)
+    public function customerDetails(Request $request)
     {
-        $hire_sales = HireSale::with('customer', 'hireSaleInstallments')
-            ->where('customer_id', $id)
-            ->where('installment_status', false)
+        $hire_sales = HireSale::query();
+        if ($request->from === 'new') {
+            $hire_sales->where('installment_status', false);
+        }
+        $hire_sales = $hire_sales->with('customer', 'hireSaleInstallments')
+            ->where('customer_id', $request->id)
             ->orderByDesc('id')
             ->get();
+
 
         return response($hire_sales, 200);
     }

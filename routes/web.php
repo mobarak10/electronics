@@ -357,7 +357,7 @@ Route::group(['namespace' => 'User'], function () {
     //get supplier details
     Route::post('user/get-details-from-party', 'SupplierController@partyDetails');
     // get customer details
-    Route::post('user/get-details-from-customer/{id}', 'CustomerController@customerDetails');
+    Route::post('user/get-details-from-customer', 'CustomerController@customerDetails');
 
     // get gl head
     Route::post('user/get-gl-account-heads', 'GLAccountController@getGLAccountHeads');

@@ -27,7 +27,7 @@
                                 <span class="mb-0 font-12">{{ config('print.print_details.mobile') }}</span>
                                 <p class="mb-0" style="font-size: 15px">{{ Carbon\Carbon::now()->format('j F, Y h:i:s a') }}</p>
                             </div>
-                            <h5 class="text-center pb-4 d-none d-print-block">Ledger Report</h5>
+                            <h5 class="text-center pb-4 d-none d-print-block">Hire Sale Ledger Report</h5>
                             <hr>
                         </div>
                         <div>
@@ -35,7 +35,7 @@
                             <h5 class="m-0 d-none d-print-block"><span>Print Date: {{ date("Y-M-d") }} </span></h5>
                         </div>
                         <div class="action-area print-none" role="group" aria-label="Action area">
-                            <a href="{{ route('report.customerLedger') }}" class="btn btn-primary" title="Refresh">
+                            <a href="{{ route('report.hireSaleLedger') }}" class="btn btn-primary" title="Refresh">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>
                             </a>
                             <a href="#" onclick="window.print();" title="Print" class="btn btn-warning">
@@ -46,7 +46,7 @@
 
                     <!-- search form start -->
                     <div class="card-body print-none">
-                        <form action="{{ route('report.customerLedger') }}" method="GET" class="row">
+                        <form action="{{ route('report.hireSaleLedger') }}" method="GET" class="row">
                             <input type="hidden" name="search" value="1">
                             <div class="form-row col-md-12">
                                 <div class="form-group col-md-3">
@@ -130,75 +130,44 @@
                                                 <td>{{ $ledger->date->format('d-M-Y') }}</td>
 
                                                 <td style="max-width: 200px" class="text-wrap">
-                                                    @if ($ledger->type === 'sale')
-                                                        <p>@lang('contents.product') @lang('contents.sale')</p>
-                                                    @elseif ($ledger->type === 'sale_return')
-                                                        <p class="text-danger">@lang('contents.product') @lang('contents.return')</p>
-                                                    @elseif($ledger->type === 'hire_sale')
+                                                    @if($ledger->type === 'hire_sale')
                                                         <p>@lang('contents.hire_sale') (voucher number: {{ $ledger->voucher_no }})</p>
                                                     @else
-                                                        <p>@lang('contents.due_management') ({{ $ledger->description }})</p>
+                                                        <p>@lang('contents.installment_collection')</p>
                                                     @endif
                                                 </td>
 
                                                 <td class="text-right">
-                                                    @if ($ledger->type === 'sale')
-                                                        {{ number_format($ledger->grand_total, 2) }}
-                                                    @elseif ($ledger->type === 'sale_return')
-                                                        {{ number_format($ledger->paid, 2) }}
-                                                    @elseif($ledger->type === 'hire_sale')
+                                                    @if($ledger->type === 'hire_sale')
                                                         {{ number_format($ledger->hire_sale_grand_total, 2) }}
-                                                    @elseif ($ledger->type === 'due_manage')
-                                                        <p>{{ (($ledger->amount <= 0) ? number_format($ledger->amount, 2) : number_format(0, 2)) }}</p>
+                                                    @else
+                                                        {{ number_format(0, 2) }}
                                                     @endif
                                                 </td>
 
                                                 <td class="text-right">
-                                                    @if ($ledger->type === 'sale')
-                                                        {{ number_format($ledger->paid, 2) }}
-                                                    @elseif ($ledger->type === 'sale_return')
-                                                        {{ number_format($ledger->return_grand_total, 2) }}
-                                                    @elseif($ledger->type === 'hire_sale')
-                                                        {{ number_format($ledger->total_pay + $ledger->down_payment, 2) }}
-                                                    @elseif ($ledger->type === 'due_manage')
-                                                        <p>{{ (($ledger->amount > 0) ? number_format($ledger->amount, 2) : number_format(0, 2)) }}</p>
+                                                    @if($ledger->type === 'hire_sale')
+                                                        {{ number_format($ledger->down_payment, 2) }}
+                                                    @else
+                                                        <p>{{ (number_format($ledger->payment_amount, 2)) }}</p>
                                                     @endif
                                                 </td>
 
                                                 <td class="text-right">
                                                     @php
-                                                        if ($ledger->type === 'sale') {
-                                                            $balance += ($ledger->grand_total - $ledger->paid);
+                                                        if ($ledger->type === 'hire_sale') {
+                                                            $balance += ($ledger->hire_sale_grand_total -  $ledger->down_payment);
                                                         }
-                                                        elseif ($ledger->type === 'sale_return') {
-                                                            $balance += ($ledger->paid - $ledger->return_grand_total);
+                                                        else{
+                                                            $balance -= $ledger->payment_amount;
                                                         }
-                                                        elseif ($ledger->type === 'hire_sale') {
-                                                            $balance += ($ledger->hire_sale_grand_total - ($ledger->total_pay + $ledger->down_payment));
-                                                        }
-                                                        elseif ($ledger->type === 'due_manage'){
-                                                            if ($ledger->amount >= 0) {
-                                                                $balance -= $ledger->amount;
-                                                            }else{
-                                                                $balance += $ledger->amount;
-                                                            }
-                                                        }
+
                                                     @endphp
                                                     {{ number_format(abs($balance), 2) }} {{ $balance >= 0 ? 'Rec' : 'Pay' }}
                                                 </td>
 
                                                 <td class="text-right print-none">
-                                                    @if ($ledger->invoice_no)
-                                                        <a href="{{ route('invoice.generate', $ledger->invoice_no) }}" class="btn btn-primary btn-sm" title="View Invoice"
-                                                           target="_blank">
-                                                            <i class="fa fa-eye"></i>
-                                                        </a>
-                                                    @elseif ($ledger->type === 'sale_return')
-                                                        <a href="{{ route('saleReturn.show', $ledger->id) }}" class="btn btn-primary btn-sm" title="View return details"
-                                                           target="_blank">
-                                                            <i class="fa fa-eye"></i>
-                                                        </a>
-                                                    @elseif ($ledger->type === 'hire_sale')
+                                                    @if ($ledger->type === 'hire_sale')
                                                         <a href="{{ route('hire-sale.show', $ledger->voucher_no) }}" class="btn btn-primary btn-sm" title="View return details"
                                                            target="_blank">
                                                             <i class="fa fa-eye"></i>

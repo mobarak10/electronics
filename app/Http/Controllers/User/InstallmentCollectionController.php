@@ -134,6 +134,7 @@ class InstallmentCollectionController extends Controller
 //        return $request->all();
         DB::transaction(function () use($request, $id) {
             $old_installment = InstallmentCollection::with('installmentPayment')->findOrFail($id);
+            Customer::findOrFail($old_installment->customer_id)->increment('balance', $old_installment->total_paid);
             $hire_sale = HireSale::findOrFail($old_installment->hire_sale_id);
             $hire_sale->installment_status = false;
             $hire_sale->save();

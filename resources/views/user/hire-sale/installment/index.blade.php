@@ -37,8 +37,8 @@
                                     <th>@lang('contents.date')</th>
                                     <th>@lang('contents.invoice_no')</th>
                                     <th style="min-width: 130px">@lang('contents.customer')</th>
-                                    <th>Paid By</th>
-                                    <th class="text-right">Paid Amount</th>
+                                    <th>@lang('contents.paid_by')</th>
+                                    <th class="text-right">@lang('contents.amount')</th>
                                     <th class="text-right print-none">@lang('contents.action')</th>
                                 </tr>
                                 </thead>

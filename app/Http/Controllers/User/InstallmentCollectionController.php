@@ -43,15 +43,21 @@ class InstallmentCollectionController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function create()
     {
         $this->meta['submenu'] = 'new';
         $customers = Customer::all();
         $cashes = Cash::all();
+        $lang = __('contents');
         $bank_accounts = BankAccount::with('bank')->get();
-        return view('user.hire-sale.installment.create', compact('customers', 'cashes', 'bank_accounts'))->with($this->meta);
+        return view('user.hire-sale.installment.create', compact(
+            'customers',
+            'lang',
+            'cashes',
+            'bank_accounts'))
+            ->with($this->meta);
     }
 
     /**
@@ -124,7 +130,19 @@ class InstallmentCollectionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->meta['submenu'] = 'new';
+        $customers = Customer::all();
+        $cashes = Cash::all();
+        $lang = __('contents');
+        $old_installment = InstallmentCollection::findOrFail($id);
+        $bank_accounts = BankAccount::with('bank')->get();
+        return view('user.hire-sale.installment.edit', compact(
+            'customers',
+            'lang',
+            'old_installment',
+            'cashes',
+            'bank_accounts'))
+            ->with($this->meta);
     }
 
     /**

@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="m-0">Installment Collection </h5>
+            <h5 class="m-0">{{ lang.installment_collection }} </h5>
 
             <div class="btn-group" role="group" aria-level="Action area">
                 <a :href="listUrl" title="show due manage list" class="btn btn-success" style="margin-right: 5px">
@@ -13,7 +13,7 @@
         <div class="card-body">
             <form method="post" @submit.prevent="saveInstallment" class="row">
                 <div class="form-group col-md-3 required text-right">
-                    <label for="date">Date</label>
+                    <label for="date">{{ lang.date }}</label>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -23,7 +23,7 @@
                 </div>
 
                 <div class="form-group col-md-3 required text-right">
-                    <label for="customerId">Name</label>
+                    <label for="customerId">{{ lang.name }}</label>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="form-group col-md-3 text-right">
-                    <label for="balance">Balance</label>
+                    <label for="balance">{{ lang.balance }}</label>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -63,7 +63,7 @@
                 </div>
 
                 <div class="form-group col-md-3 text-right">
-                    <label for="voucher_no">Voucher No</label>
+                    <label for="voucher_no">{{ lang.voucher_no }}</label>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="form-group col-md-3 text-right">
-                    <label for="due">Due</label>
+                    <label for="due">{{ lang.due }}</label>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="form-group col-md-3 text-right">
-                    <label for="installment_amount">Installment Amount</label>
+                    <label for="installment_amount">{{ lang.installment }} {{ lang.amount }}</label>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -113,14 +113,14 @@
                 </div>
 
                <div class="form-group col-md-3 required text-right">
-                   <label for="method">Collection Method</label>
+                   <label for="method">{{ lang.collection_method }}</label>
                </div>
 
                <div class="form-group col-md-6">
                    <select v-model="where" id="method" class="form-control">
-                       <option value="cash">Cash</option>
-                       <option value="bank">Bank</option>
-                       <option value="bkash">Bkash</option>
+                       <option value="cash">{{ lang.cash }}</option>
+                       <option value="bank">{{ lang.bank }}</option>
+                       <option value="bkash">{{ lang.bkash }}</option>
                    </select>
                </div>
                <div class="col-md-3">
@@ -128,7 +128,7 @@
 
                 <div v-if="where === 'cash'" class="row w-100 mx-0">
                     <div class="form-group col-md-3 required text-right">
-                        <label for="cash">Cash Name</label>
+                        <label for="cash">{{ lang.cash }}</label>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -147,7 +147,7 @@
 
                 <div v-if="where === 'bkash'" class="row w-100 mx-0">
                     <div class="form-group col-md-3 required text-right">
-                        <label for="bkash">Bkash Number</label>
+                        <label for="bkash">{{ lang.bkash }}</label>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -159,7 +159,7 @@
 
                 <div v-if="where === 'bank'" class="row w-100 mx-0">
                     <div class="form-group col-md-3 required text-right">
-                        <label for="bank">Bank Name</label>
+                        <label for="bank">{{ lang.bank }}</label>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -176,7 +176,7 @@
                     </div>
 
                     <div class="form-group col-md-3 required text-right">
-                        <label for="issue_date">Issue Date</label>
+                        <label for="issue_date">{{ lang.issue_date }}</label>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -186,7 +186,7 @@
                     </div>
 
                     <div class="form-group col-md-3 text-right">
-                        <label for="check_no">Check No</label>
+                        <label for="check_no">{{ lang.check_no }}</label>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -197,7 +197,7 @@
                 </div>
 
                 <div class="form-group col-md-3 required text-right">
-                    <label for="payment">Payment(TK)</label>
+                    <label for="payment">{{ lang.payment }} {{ lang.amount }}</label>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -207,7 +207,7 @@
                 </div>
 
                 <div class="form-group col-md-3 text-right">
-                    <label for="remission">Remission(TK)</label>
+                    <label for="remission">{{ lang.remission }} {{ lang.tk }}</label>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -217,7 +217,7 @@
                 </div>
 
                 <div class="form-group col-md-3 text-right">
-                    <label for="adjustment">Adjustment(TK)</label>
+                    <label for="adjustment">{{ lang.adjustment }} {{ lang.tk }}</label>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -227,7 +227,7 @@
                 </div>
 
                 <div class="form-group col-md-3 text-right">
-                    <label for="paid_by">Paid By</label>
+                    <label for="paid_by">{{ lang.paid_by }}</label>
                 </div>
 
                 <div class="form-group col-md-6">
@@ -237,8 +237,8 @@
                 </div>
 
                 <div class="form-group col-md-9 text-right">
-                    <button type="reset" class="btn btn-danger">Reset</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="reset" class="btn btn-danger">{{ lang.reset }}</button>
+                    <button type="submit" class="btn btn-primary">{{ lang.save }}</button>
                 </div>
             </form>
         </div>
@@ -248,7 +248,7 @@
 <script>
 export default {
     name: "CreateInstallmentComponent",
-    props: ['bankAccounts', 'cashes', 'customers'],
+    props: ['bankAccounts', 'cashes', 'lang', 'customers'],
     computed: {
         listUrl(){
             return baseURL + 'user/installmentCollection'

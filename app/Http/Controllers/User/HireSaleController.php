@@ -40,14 +40,6 @@ class HireSaleController extends Controller
     {
         $this->meta['submenu'] = 'list';
 
-//        $hire_sale_products = HireSaleProduct::all();
-//
-//        foreach ($hire_sale_products as $hire_sale_product){
-//            $hire_sale_product->update([
-//                'purchase_price' => $hire_sale_product->product->purchase_price
-//            ]);
-//        }
-
         $hire_sales = HireSale::with('customer.metas')->orderBy('id', 'Desc')->paginate(30);
         $date = null;
         $customers = Customer::all();
@@ -72,23 +64,6 @@ class HireSaleController extends Controller
 
             // set query
             $hire_sales = $hire_sales->where($where);
-
-            // set date
-            if (request()->date['from'] != null) {
-                $date[] = date(request()->date['from']);
-            }
-
-            if (request()->date['to'] != null) {
-                $date[] = date(request()->date['to']);
-            } else {
-                if (request()->date['from'] != null) {
-                    $date[] = date('Y-m-d');
-                }
-            }
-
-            if (count($date) > 0) {
-                $hire_sales = $hire_sales->whereBetween('date', $date);
-            }
 
             // get data
             $hire_sales = $hire_sales->paginate(30);

@@ -92,6 +92,7 @@ class CustomerController extends Controller
 
         DB::transaction(function() use($request) {
             $data = $request->validated();
+            $data['type'] = 'hire_customer';
 
             if ($request->image) {
                 //Media

@@ -40,7 +40,7 @@
                                         <div class="form-group col-md-12 required">
                                             <label for="balance">@lang('contents.balance')</label>
                                             <div class="input-group">
-                                                <input type="text" value="{{ old('balance') }}" name="balance" class="form-control" min="0" id="balance" placeholder="Balance">
+                                                <input type="number" value="{{ old('balance') }}" name="balance" class="form-control" min="0" id="balance" placeholder="Balance">
                                                 <div class="input-group-append">
                                                     <select name="balance_status" class="form-control">
                                                         <option selected value="receivable">Receivable</option>

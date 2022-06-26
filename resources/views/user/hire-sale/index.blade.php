@@ -15,10 +15,6 @@
 
                         <div>
                             <!-- for refresh -->
-                            {{--                            <a href="{{ route('pos.export') }}" class="btn btn-success print-none" title="Export Excel">--}}
-                            {{--                                <i class="fa fa-file-excel-o" aria-hidden="true"></i>--}}
-                            {{--                            </a>--}}
-
                             <a href="{{ route('hire-sale.index') }}" class="btn btn-primary print-none" title="Refresh">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>
                             </a>
@@ -41,27 +37,12 @@
                                 <input type="hidden" name="search" value="1">
 
                                 <div class="row">
-                                    {{--                                    <div class="form-group col-md-4">--}}
-                                    {{--                                        <label for="date-from">@lang('contents.date') (@lang('contents.from'))</label>--}}
-                                    {{--                                        <input type="date" class="form-control" name="date[from]" value="{{ request()->date['from'] ?? '' }}" id="date-form">--}}
-                                    {{--                                    </div>--}}
-
-                                    {{--                                    <div class="form-group col-md-4">--}}
-                                    {{--                                        <label for="date-to">@lang('contents.date') (@lang('contents.to'))</label>--}}
-                                    {{--                                        <input type="date" class="form-control" name="date[to]" value="{{ request()->date['to'] ?? ''}}" id="date-to">--}}
-                                    {{--                                    </div>--}}
-
-                                    {{--                                    <div class="form-group col-md-4">--}}
-                                    {{--                                        <label for="voucher_no">@lang('contents.invoice_no')</label>--}}
-                                    {{--                                        <input type="text" class="form-control" name="condition[voucher_no]" value="{{ request()->condition['voucher_no'] ?? '' }}" placeholder="xxxxxxxx" id="voucher_no">--}}
-                                    {{--                                    </div>--}}
-
                                     <div class="form-group col-md-4">
                                         <label for="party">@lang('contents.customer_name')</label>
-                                        <select name="condition[party_id]" class="form-control" id="party">
+                                        <select name="condition[customer_id]" class="form-control" id="party">
                                             <option value="">Choose Customer</option>
                                             @foreach($customers as $customer)
-                                                <option {{ ((request()->condition['party_id'] ?? '') == $customer->id) ? 'selected' : '' }} value="{{ $customer->id }}">
+                                                <option {{ ((request()->condition['customer_id'] ?? '') == $customer->id) ? 'selected' : '' }} value="{{ $customer->id }}">
                                                     {{ $customer->name }}
                                                 </option>
                                             @endforeach

@@ -574,7 +574,7 @@ export default {
             this.$awn.asyncBlock(
                 axios.post(baseURL + "user/hire-sale", data),
                 response => {
-                    // console.log(response.data)
+                    console.log(response.data)
                     window.location.href = baseURL + 'user/hire-sale/' + response.data.voucher_no;
                 }
             );

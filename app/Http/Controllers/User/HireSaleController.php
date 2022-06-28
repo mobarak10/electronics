@@ -100,7 +100,7 @@ class HireSaleController extends Controller
     public function store(Request $request)
     {
 //        return $request->all();
-        DB::transaction(function() use($request) {
+//        DB::transaction(function() use($request) {
             $hire_sale_data = $request->validate([
                 'date' => 'required|date',
                 'warehouse_id' => 'required|integer',
@@ -135,7 +135,7 @@ class HireSaleController extends Controller
             // store hire sale installment
             $this->hireSaleInstallment($request, $hire_sale);
 
-        });
+//        });
 
         return response($this->hire_sale, 200);
     }
@@ -262,13 +262,12 @@ class HireSaleController extends Controller
             $data['purchase_price'] = $product['purchase_price'];
             $data['line_total'] = $product['line_total'];
 
-            $product = Product::find($product['id']);
-            $current_warehouse = $product->warehouses->where('id', $request->warehouse_id)->first();
-            $present_quantity = $current_warehouse->stock->quantity;
-            $current_quantity = $present_quantity - $product['quantity'];
+            $_product = Product::find($product['id']);
+            $warehouse = $_product->warehouses()
+                ->find($request->warehouse_id);
 
-            $current_warehouse->stock->quantity = $current_quantity;
-            $current_warehouse->push(); // save current stock
+            // decrement quantity from warehouse
+            $warehouse->stock->decrement('quantity', $product['quantity']);
 
             // store data into hire sale product table
             HireSaleProduct::create($data);

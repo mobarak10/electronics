@@ -118,7 +118,7 @@ class CustomerController extends Controller
                 'contact_person_phone' => 'nullable|string',
             ]);
 
-            $data['code']  = 'CUST' . str_pad(Customer::max('id') + 1, 8, '0', STR_PAD_LEFT);
+            $data['code']  = 'CUST' . str_pad(Customer::withTrashed()->max('id') + 1, 8, '0', STR_PAD_LEFT);
             $data['business_id'] = Auth::user()->business_id;
 
             if ($request->balance_status == 'payable') {
